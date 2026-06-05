@@ -12,41 +12,76 @@ const pageDescription =
 		<meta name="generator" content={Astro.generator} />
 		<title>{pageTitle}</title>
 		<meta name="description" content={pageDescription} />
+		<meta name="theme-color" content="#f3ebdf" />
 	</head>
 	<body>
 		<main class="site-shell">
-			<section class="hero">
-				<div class="eyebrow">Plancha360</div>
-				<h1>Outdoor cooking that feels like the center of the evening.</h1>
-				<p class="lede">
-					Plancha360 is a premium-accessible outdoor cooking brand built for long tables, friends, and the kind of meals
-					people remember because they happened together.
-				</p>
+			<header class="topbar">
+				<a class="brand" href="#top" aria-label="Plancha360 home">
+					<img src="/images/logo/plancha360-logo.svg" alt="Plancha360" />
+					<span>Plancha360</span>
+				</a>
+				<nav aria-label="Primary">
+					<a href="#product">Product</a>
+					<a href="#story">Brand story</a>
+					<a href="#waitlist">Waitlist</a>
+				</nav>
+			</header>
 
-				<div class="hero-actions">
-					<a class="button button-primary" href="#waitlist">Join the waitlist</a>
-					<a class="button button-secondary" href="#product">Explore the product</a>
+			<section class="hero" id="top">
+				<div class="hero-copy">
+					<div class="eyebrow">Outdoor cooking, made social</div>
+					<h1>Cook together. Stay longer. Make the evening the point.</h1>
+					<p class="lede">
+						Plancha360 is a premium-accessible outdoor cooking brand built for warm gatherings, relaxed hosting, and the kind of
+						moments people remember because they happened around the fire.
+					</p>
+
+					<div class="hero-actions">
+						<a class="button button-primary" href="#waitlist">Join the waitlist</a>
+						<a class="button button-secondary" href="#product">See the product</a>
+					</div>
+
+					<div class="trust-row" aria-label="Key brand promises">
+						<span>Social first</span>
+						<span>Warm, bold, modern</span>
+						<span>Built to last</span>
+					</div>
 				</div>
 
-				<div class="trust-row" aria-label="Key brand promises">
-					<span>Social first</span>
-					<span>Premium but accessible</span>
-					<span>Built to last</span>
+				<div class="hero-visual">
+					<div class="visual-card visual-card-large">
+						<img src="/images/hero/hero-main.png" alt="Friends cooking together around a Plancha360 grill" />
+					</div>
+					<div class="visual-stack">
+						<div class="visual-card visual-card-small">
+							<img src="/images/products/model-900.png" alt="Plancha360 Model 900 product image" />
+						</div>
+						<div class="hero-note">
+							<p class="eyebrow">The experience</p>
+							<p>
+								A fire-powered table anchor that turns hosting into a shared ritual — cooking, serving, talking, staying.
+							</p>
+						</div>
+					</div>
 				</div>
 			</section>
 
-			<section class="intro-grid" aria-label="Brand summary">
+			<section class="intro-grid" aria-label="Brand summary" id="story">
 				<article>
-					<h2>Show, don’t tell.</h2>
+					<p class="eyebrow">Show, don’t tell</p>
+					<h2>The feeling comes first.</h2>
 					<p>
-						The website should make people feel the scene before they read the specs: warm fire, easy hosting, and a product
-						that turns cooking into a shared ritual.
+						The site should make people feel the scene before they read the specs: warm fire, easy hosting, shared plates,
+						and a product that brings everyone closer without feeling precious or intimidating.
 					</p>
 				</article>
 				<article>
-					<h2>Built for the first customer.</h2>
+					<p class="eyebrow">Built for the first customer</p>
+					<h2>Home hosts first. Then events. Then hospitality.</h2>
 					<p>
-						Home hosts first. Then events. Then hospitality. The message stays simple: this is the grill people gather around.
+						The immediate job is to convince people who love hosting that this is the grill they want at the center of the
+						evening. Everything else comes later.
 					</p>
 				</article>
 			</section>
@@ -55,20 +90,33 @@ const pageDescription =
 				<div class="section-heading">
 					<p class="eyebrow">The product</p>
 					<h2>One object. Multiple reasons to gather.</h2>
+					<p>
+						Plancha360 should feel clear in seconds: a steel outdoor cooking object that is premium enough to trust, accessible
+						enough to want, and social enough to become the center of the night.
+					</p>
 				</div>
 
-				<div class="card-grid">
-					<article class="card">
-						<h3>Model 900</h3>
-						<p>900 mm diameter · 5 mm grill plate · hip-high format for shared outdoor cooking.</p>
+				<div class="card-grid models">
+					<article class="card model-card">
+						<img src="/images/products/model-900.png" alt="Plancha360 Model 900" />
+						<div>
+							<h3>Model 900</h3>
+							<p>900 mm diameter · 5 mm grill plate · hip-high format for shared outdoor cooking and bigger gatherings.</p>
+						</div>
 					</article>
-					<article class="card">
-						<h3>Model 700</h3>
-						<p>700 mm diameter · 5 mm grill plate · the smaller version for tighter patios and easier setups.</p>
+					<article class="card model-card">
+						<img src="/images/products/model-700.png" alt="Plancha360 Model 700" />
+						<div>
+							<h3>Model 700</h3>
+							<p>700 mm diameter · 5 mm grill plate · the smaller version for tighter patios and easier setups.</p>
+						</div>
 					</article>
-					<article class="card">
-						<h3>Why it matters</h3>
-						<p>It is not just hardware. It is the anchor of the evening: cook, talk, serve, stay.</p>
+					<article class="card model-card">
+						<img src="/images/products/product-01.png" alt="Plancha360 product detail" />
+						<div>
+							<h3>Why it matters</h3>
+							<p>It is not just hardware. It is the anchor of the evening: cook, talk, serve, stay.</p>
+						</div>
 					</article>
 				</div>
 			</section>
@@ -77,6 +125,10 @@ const pageDescription =
 				<div>
 					<p class="eyebrow">What it solves</p>
 					<h2>People buy the feeling, then the function.</h2>
+					<p>
+						The brand should answer the real objections without sounding defensive: why it is worth the money, where it fits,
+						how practical it is, and why it is safe and durable enough to become part of real life.
+					</p>
 				</div>
 				<ul class="benefits">
 					<li>Turns cooking into a social event instead of a solo task.</li>
@@ -84,6 +136,39 @@ const pageDescription =
 					<li>Simple enough to understand in seconds.</li>
 					<li>Credible enough to justify the price.</li>
 				</ul>
+			</section>
+
+			<section class="section showcase">
+				<div class="section-heading">
+					<p class="eyebrow">Social proof</p>
+					<h2>Make it obvious that this belongs at the center of a good gathering.</h2>
+				</div>
+				<div class="showcase-grid">
+					<div class="visual-card">
+						<img src="/images/lifestyle/lifestyle-01.png" alt="A large outdoor gathering around Plancha360" />
+					</div>
+					<div class="showcase-copy">
+						<h3>Warm, human, modern.</h3>
+						<p>
+							The best shots are the ones that show the product in use: people moving around it, sharing food, talking,
+							and keeping the moment going.
+						</p>
+						<p>
+							That is the emotion we want: not “look at this object,” but “I want that evening.”
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="section roadmap">
+				<div class="roadmap-card">
+					<p class="eyebrow">Roadmap</p>
+					<h2>Launch first, then expand.</h2>
+					<p>
+						Waitlist now. Direct purchase next. Rentals later. Once the prototype arrives, the site can grow with real use-case
+						content: party cooking, casual grilling, how-to videos, care guides, and event imagery.
+					</p>
+				</div>
 			</section>
 
 			<section class="section" id="waitlist">
@@ -147,24 +232,24 @@ const pageDescription =
 <style>
 	:global(:root) {
 		color-scheme: light;
-		--bg: #f5efe6;
-		--panel: rgba(255, 255, 255, 0.68);
-		--panel-strong: #fff9f1;
-		--text: #1f1a17;
-		--muted: #665b54;
-		--border: rgba(31, 26, 23, 0.12);
-		--accent: #b8552d;
-		--accent-2: #2d4b45;
-		--shadow: 0 24px 80px rgba(51, 32, 18, 0.12);
+		--bg: #f3eadf;
+		--panel: rgba(255, 255, 255, 0.72);
+		--panel-strong: #fffaf4;
+		--text: #1d1815;
+		--muted: #665952;
+		--border: rgba(29, 24, 21, 0.12);
+		--accent: #b6532a;
+		--accent-2: #2f4b45;
+		--shadow: 0 26px 90px rgba(63, 40, 20, 0.14);
 		font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 	}
 
 	:global(html) {
 		background:
-			radial-gradient(circle at top left, rgba(184, 85, 45, 0.18), transparent 40%),
-			radial-gradient(circle at top right, rgba(45, 75, 69, 0.14), transparent 34%),
+			radial-gradient(circle at top left, rgba(182, 83, 42, 0.16), transparent 40%),
+			radial-gradient(circle at top right, rgba(47, 75, 69, 0.12), transparent 32%),
 			var(--bg);
-		color: var(--text);
+			color: var(--text);
 	}
 
 	:global(body) {
@@ -172,24 +257,73 @@ const pageDescription =
 		min-height: 100vh;
 	}
 
+	:global(img) {
+		display: block;
+		max-width: 100%;
+	}
+
 	.site-shell {
-		max-width: 1120px;
+		max-width: 1180px;
 		margin: 0 auto;
-		padding: 32px 20px 72px;
+		padding: 24px 20px 72px;
+	}
+
+	.topbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 20px;
+		padding: 14px 6px 22px;
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		text-decoration: none;
+		color: var(--text);
+		font-weight: 700;
+		letter-spacing: 0.02em;
+	}
+
+	.brand img {
+		width: 36px;
+		height: 36px;
+		object-fit: contain;
+	}
+
+	nav {
+		display: flex;
+		gap: 18px;
+		flex-wrap: wrap;
+	}
+
+	nav a {
+		text-decoration: none;
+		color: var(--muted);
+		font-weight: 600;
 	}
 
 	.hero,
 	.section,
-	.intro-grid article {
+	.intro-grid article,
+	.roadmap-card {
 		background: var(--panel);
 		backdrop-filter: blur(20px);
 		border: 1px solid var(--border);
-		border-radius: 28px;
+		border-radius: 30px;
 		box-shadow: var(--shadow);
 	}
 
 	.hero {
-		padding: 56px 40px;
+		display: grid;
+		grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+		gap: 28px;
+		padding: 44px;
+	}
+
+	.hero-copy {
+		align-self: center;
 	}
 
 	.eyebrow {
@@ -209,16 +343,17 @@ const pageDescription =
 	}
 
 	h1 {
-		font-size: clamp(3rem, 7vw, 6rem);
-		line-height: 0.92;
+		font-size: clamp(3rem, 6.4vw, 6.2rem);
+		line-height: 0.93;
 		max-width: 11ch;
 		margin-bottom: 20px;
+		text-wrap: balance;
 	}
 
 	.lede {
-		font-size: 1.18rem;
-		line-height: 1.7;
-		max-width: 58ch;
+		font-size: 1.12rem;
+		line-height: 1.75;
+		max-width: 60ch;
 		color: var(--muted);
 		margin-bottom: 28px;
 	}
@@ -235,6 +370,7 @@ const pageDescription =
 		align-items: center;
 		justify-content: center;
 		padding: 14px 20px;
+		min-height: 48px;
 		border-radius: 999px;
 		text-decoration: none;
 		font-weight: 700;
@@ -247,7 +383,7 @@ const pageDescription =
 	}
 
 	.button-secondary {
-		border-color: rgba(31, 26, 23, 0.18);
+		border-color: rgba(29, 24, 21, 0.16);
 		color: var(--text);
 		background: rgba(255, 255, 255, 0.42);
 	}
@@ -267,6 +403,56 @@ const pageDescription =
 		font-size: 0.92rem;
 	}
 
+	.hero-visual {
+		display: grid;
+		gap: 16px;
+		align-content: start;
+	}
+
+	.visual-card {
+		overflow: hidden;
+		border-radius: 24px;
+		border: 1px solid rgba(29, 24, 21, 0.1);
+		background: #e8ddd0;
+		box-shadow: 0 18px 40px rgba(45, 30, 18, 0.12);
+	}
+
+	.visual-card img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.visual-card-large {
+		aspect-ratio: 4 / 3;
+	}
+
+	.visual-stack {
+		display: grid;
+		grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+		gap: 16px;
+		align-items: stretch;
+	}
+
+	.visual-card-small {
+		aspect-ratio: 1 / 1;
+	}
+
+	.hero-note {
+		display: grid;
+		align-content: end;
+		padding: 22px;
+		border-radius: 24px;
+		background: linear-gradient(145deg, rgba(182, 83, 42, 0.12), rgba(47, 75, 69, 0.08));
+		border: 1px solid var(--border);
+	}
+
+	.hero-note p:last-child {
+		color: var(--muted);
+		line-height: 1.7;
+		margin-bottom: 0;
+	}
+
 	.intro-grid {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -275,7 +461,8 @@ const pageDescription =
 	}
 
 	.intro-grid article,
-	.section {
+	.section,
+	.roadmap-card {
 		padding: 28px;
 	}
 
@@ -304,6 +491,18 @@ const pageDescription =
 		border: 1px solid var(--border);
 	}
 
+	.model-card {
+		display: grid;
+		gap: 16px;
+	}
+
+	.model-card img {
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		border-radius: 16px;
+		border: 1px solid rgba(29, 24, 21, 0.08);
+	}
+
 	.card p,
 	.intro-grid p,
 	.section p,
@@ -327,6 +526,21 @@ const pageDescription =
 		grid-template-columns: 1fr;
 	}
 
+	.showcase-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+		gap: 20px;
+		align-items: center;
+	}
+
+	.showcase-copy {
+		padding: 4px 6px;
+	}
+
+	.roadmap-card {
+		background: linear-gradient(140deg, rgba(182, 83, 42, 0.12), rgba(255, 255, 255, 0.5));
+	}
+
 	.waitlist-form {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -347,7 +561,7 @@ const pageDescription =
 		padding: 14px 16px;
 		border-radius: 16px;
 		border: 1px solid var(--border);
-		background: rgba(255, 255, 255, 0.82);
+		background: rgba(255, 255, 255, 0.84);
 		font: inherit;
 		color: var(--text);
 	}
@@ -366,10 +580,29 @@ const pageDescription =
 		font-weight: 700;
 	}
 
-	@media (max-width: 900px) {
+	@media (max-width: 980px) {
+		.hero,
+		.showcase-grid,
+		.split {
+			grid-template-columns: 1fr;
+		}
+
+		.card-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.visual-stack {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 780px) {
+		.topbar {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
 		.intro-grid,
-		.card-grid,
-		.split,
 		.waitlist-form {
 			grid-template-columns: 1fr;
 		}
@@ -379,7 +612,7 @@ const pageDescription =
 		}
 
 		.hero {
-			padding: 40px 24px;
+			padding: 28px 20px;
 		}
 	}
 
@@ -390,7 +623,8 @@ const pageDescription =
 
 		.section,
 		.intro-grid article,
-		.hero {
+		.hero,
+		.roadmap-card {
 			border-radius: 22px;
 		}
 
