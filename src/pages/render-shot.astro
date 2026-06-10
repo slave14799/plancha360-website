@@ -1,0 +1,110 @@
+---
+const title = "Plancha360 render shot";
+const view = Astro.url.searchParams.get("view") ?? "front";
+const views = {
+	front: { label: "Front three-quarter", orbit: "35deg 75deg 2.8m" },
+	left: { label: "Left three-quarter", orbit: "145deg 75deg 2.8m" },
+	rear: { label: "Rear three-quarter", orbit: "235deg 75deg 2.8m" },
+};
+const current = views[view] ?? views.front;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+	</head>
+	<body>
+		<main class="stage">
+			<model-viewer
+				src="/3d/plancha360.glb"
+				camera-orbit={current.orbit}
+				camera-target="1.020m 1.250m 1.646m"
+				shadow-intensity="1"
+				environment-image="neutral"
+				interaction-prompt="none"
+				reveal="auto"
+				alt={`Plancha360 3D product model - ${current.label}`}
+				field-of-view="24deg"
+			></model-viewer>
+		</main>
+
+		<script type="module">
+			const palette = [
+				{ c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
+				{ c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
+				{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+				{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+				{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+				{ c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
+				{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+				{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+				{ c: [0.62, 0.52, 0.23, 1], m: 1, r: 0.5 },
+				{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+				{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+				{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+			];
+
+			function applyMaterialPass(viewer) {
+				if (!viewer.model?.materials?.length) return false;
+				viewer.model.materials.forEach((mat, i) => {
+					const p = palette[i] ?? palette[2];
+					mat.pbrMetallicRoughness.setBaseColorFactor(p.c);
+					mat.pbrMetallicRoughness.setMetallicFactor(p.m);
+					mat.pbrMetallicRoughness.setRoughnessFactor(p.r);
+					mat.setDoubleSided(true);
+				});
+				return true;
+			}
+
+			document.querySelectorAll("model-viewer").forEach((viewer) => {
+				if (!applyMaterialPass(viewer)) {
+					viewer.addEventListener("load", () => applyMaterialPass(viewer), { once: true });
+				}
+			});
+		</script>
+	</body>
+</html>
+
+<style>
+	:global(html, body) {
+		margin: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		background: radial-gradient(circle at 50% 40%, #f4ead9 0%, #e6d3bc 52%, #c8ad8c 100%);
+	}
+
+	.stage {
+		position: relative;
+		width: 100vw;
+		height: 100vh;
+	}
+
+	model-viewer {
+		width: 100%;
+		height: 100%;
+		display: block;
+		background: transparent;
+		--poster-color: transparent;
+		--progress-bar-color: #b6532a;
+		--progress-mask: transparent;
+	}
+
+	.badge {
+		position: absolute;
+		top: 18px;
+		left: 18px;
+		z-index: 2;
+		padding: 8px 12px;
+		border-radius: 999px;
+		background: rgba(18, 14, 10, 0.72);
+		color: #f4ead9;
+		font: 600 12px/1.1 system-ui, sans-serif;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		backdrop-filter: blur(14px);
+	}
+</style>

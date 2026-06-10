@@ -4,31 +4,69 @@ const { class: className = "" } = Astro.props;
 
 <div class={`viewer-shell ${className}`.trim()}>
 	<div class="viewer-frame">
-		<div class="viewer-badge">Interactive 3D prototype</div>
-	<model-viewer
-		src="/3d/plancha360.glb"
-		camera-controls
-		auto-rotate
-		shadow-intensity="1"
-		environment-image="neutral"
-		interaction-prompt="none"
-		ar-status="not-presenting"
-		reveal="auto"
-		alt="Plancha360 3D product model"
-	>
-	</model-viewer>
+		<div class="viewer-badge">Product render</div>
+		<model-viewer
+			src="/3d/plancha360.glb"
+			camera-controls
+			disable-pan
+			auto-rotate
+			rotation-per-second="10deg"
+			camera-orbit="35deg 75deg 2.8m"
+			camera-target="1.020m 1.250m 1.646m"
+			shadow-intensity="1"
+			environment-image="neutral"
+			interaction-prompt="none"
+			reveal="auto"
+			alt="Plancha360 3D product model"
+			field-of-view="24deg"
+		></model-viewer>
 	</div>
 
 	<div class="viewer-caption">
-		<p class="eyebrow">Interactive 3D preview</p>
+		<p class="eyebrow">3D preview</p>
 		<p>Rotate the model to inspect the form, proportions, and steel construction while the photography catches up.</p>
 		<div class="viewer-tags" aria-label="3D viewer highlights">
 			<span>360° inspection</span>
 			<span>Steel build</span>
-			<span>Prototype</span>
+			<span>Production baseline</span>
 		</div>
 	</div>
 </div>
+
+<script type="module">
+	const palette = [
+		{ c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
+		{ c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
+		{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+		{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+		{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+		{ c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
+		{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+		{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+		{ c: [0.62, 0.52, 0.23, 1], m: 1, r: 0.5 },
+		{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+		{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+		{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+	];
+
+	function applyMaterialPass(viewer) {
+		if (!viewer.model?.materials?.length) return false;
+		viewer.model.materials.forEach((mat, i) => {
+			const p = palette[i] ?? palette[2];
+			mat.pbrMetallicRoughness.setBaseColorFactor(p.c);
+			mat.pbrMetallicRoughness.setMetallicFactor(p.m);
+			mat.pbrMetallicRoughness.setRoughnessFactor(p.r);
+			mat.setDoubleSided(true);
+		});
+		return true;
+	}
+
+	document.querySelectorAll("model-viewer").forEach((viewer) => {
+		if (!applyMaterialPass(viewer)) {
+			viewer.addEventListener("load", () => applyMaterialPass(viewer), { once: true });
+		}
+	});
+</script>
 
 <style>
 	.viewer-shell {
