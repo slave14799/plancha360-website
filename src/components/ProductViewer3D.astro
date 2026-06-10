@@ -6,19 +6,19 @@ const { class: className = "" } = Astro.props;
 	<div class="viewer-frame">
 		<div class="viewer-badge">Product render</div>
 		<model-viewer
-			src="/3d/plancha360.glb"
-			camera-controls
-			disable-pan
-			auto-rotate
-			rotation-per-second="10deg"
-			camera-orbit="35deg 75deg 2.8m"
-			camera-target="1.020m 1.250m 1.646m"
-			shadow-intensity="1"
-			environment-image="neutral"
-			interaction-prompt="none"
-			reveal="auto"
-			alt="Plancha360 3D product model"
-			field-of-view="24deg"
+		  src="/3d/plancha360.glb"
+		  camera-controls
+		  disable-pan
+		  camera-orbit="0deg 75deg 3.5m"
+		  camera-target="1.020m 0.834m 1.646m"
+		  min-camera-orbit="auto auto auto"
+		  max-camera-orbit="auto auto auto"
+		  shadow-intensity="1"
+		  environment-image="neutral"
+		  interaction-prompt="none"
+		  reveal="auto"
+		  alt="Plancha360 3D product model"
+		  field-of-view="30deg"
 		></model-viewer>
 	</div>
 
@@ -31,41 +31,83 @@ const { class: className = "" } = Astro.props;
 			<span>Production baseline</span>
 		</div>
 	</div>
-</div>
+	<script type="module">
+		const viewer = document.querySelector('model-viewer');
+		viewer.addEventListener('load', () => {
+			const center = viewer.getCameraTarget();
+			console.log('MODEL CENTER:', center);
+			const bb = viewer.model?.boundingBox;
+			if (bb) {
+				console.log('BOUNDING BOX min:', bb.min, 'max:', bb.max);
+				const cx = (bb.min.x + bb.max.x) / 2;
+				const cy = (bb.min.y + bb.max.y) / 2;
+				const cz = (bb.min.z + bb.max.z) / 2;
+				console.log('COMPUTED CENTER:', cx, cy, cz);
+			}
+		});
+	</script>
+	</div>
 
 <script type="module">
-	const palette = [
-		{ c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
-		{ c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
-		{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
-		{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
-		{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
-		{ c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
-		{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
-		{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
-		{ c: [0.62, 0.52, 0.23, 1], m: 1, r: 0.5 },
-		{ c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
-		{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
-		{ c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
-	];
+  // Material pass
+  const palette = [
+    { c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
+    { c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
+    { c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+    { c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+    { c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+    { c: [0.07, 0.08, 0.09, 1], m: 1, r: 0.56 },
+    { c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+    { c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+    { c: [0.62, 0.52, 0.23, 1], m: 1, r: 0.5 },
+    { c: [0.48, 0.5, 0.52, 1], m: 1, r: 0.7 },
+    { c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+    { c: [0.54, 0.55, 0.56, 1], m: 1, r: 0.42 },
+  ];
 
-	function applyMaterialPass(viewer) {
-		if (!viewer.model?.materials?.length) return false;
-		viewer.model.materials.forEach((mat, i) => {
-			const p = palette[i] ?? palette[2];
-			mat.pbrMetallicRoughness.setBaseColorFactor(p.c);
-			mat.pbrMetallicRoughness.setMetallicFactor(p.m);
-			mat.pbrMetallicRoughness.setRoughnessFactor(p.r);
-			mat.setDoubleSided(true);
-		});
-		return true;
-	}
+  function applyMaterialPass(viewer) {
+    if (!viewer.model?.materials?.length) return false;
+    viewer.model.materials.forEach((mat, i) => {
+      const p = palette[i] ?? palette[2];
+      mat.pbrMetallicRoughness.setBaseColorFactor(p.c);
+      mat.pbrMetallicRoughness.setMetallicFactor(p.m);
+      mat.pbrMetallicRoughness.setRoughnessFactor(p.r);
+      mat.setDoubleSided(true);
+    });
+    return true;
+  }
 
-	document.querySelectorAll("model-viewer").forEach((viewer) => {
-		if (!applyMaterialPass(viewer)) {
-			viewer.addEventListener("load", () => applyMaterialPass(viewer), { once: true });
-		}
-	});
+  // Manual rotation around correct pivot
+  const viewer = document.querySelector('model-viewer');
+  let currentAngle = 0;
+  let isUserInteracting = false;
+  let animFrame;
+
+  function rotateTick() {
+    if (!isUserInteracting) {
+      currentAngle += 0.1;
+      const rad = currentAngle * Math.PI / 180;
+      const radius = 3.5;
+      const theta = rad;
+      const phi = 75 * Math.PI / 180;
+      viewer.cameraOrbit = `${currentAngle}deg 75deg 3.5m`;
+    }
+    animFrame = requestAnimationFrame(rotateTick);
+  }
+
+  viewer.addEventListener('mousedown', () => { isUserInteracting = true; });
+  viewer.addEventListener('touchstart', () => { isUserInteracting = true; });
+  viewer.addEventListener('mouseup', () => { isUserInteracting = false; });
+  viewer.addEventListener('touchend', () => { isUserInteracting = false; });
+
+  if (!applyMaterialPass(viewer)) {
+    viewer.addEventListener('load', () => {
+      applyMaterialPass(viewer);
+      rotateTick();
+    }, { once: true });
+  } else {
+    rotateTick();
+  }
 </script>
 
 <style>
