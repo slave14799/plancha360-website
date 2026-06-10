@@ -2,6 +2,7 @@
 const pageTitle = "Plancha360 | Outdoor cooking, made social";
 const pageDescription =
 	"Plancha360 is a premium-accessible outdoor cooking brand built around shared meals, warm gatherings, and the urge to cook together.";
+import ProductViewer3D from "../components/ProductViewer3D.astro";
 ---
 
 <html lang="en">
@@ -13,7 +14,8 @@ const pageDescription =
 		<title>{pageTitle}</title>
 		<meta name="description" content={pageDescription} />
 		<meta name="theme-color" content="#f3ebdf" />
-	</head>
+		<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+		</head>
 	<body>
 		<main class="site-shell">
 			<header class="topbar">
@@ -50,20 +52,7 @@ const pageDescription =
 				</div>
 
 				<div class="hero-visual">
-					<div class="visual-card visual-card-large">
-						<img src="/images/hero/hero-main.png" alt="Friends cooking together around a Plancha360 grill" />
-					</div>
-					<div class="visual-stack">
-						<div class="visual-card visual-card-small">
-							<img src="/images/products/model-900.png" alt="Plancha360 Model 900 product image" />
-						</div>
-						<div class="hero-note">
-							<p class="eyebrow">The experience</p>
-							<p>
-								A fire-powered table anchor that turns hosting into a shared ritual — cooking, serving, talking, staying.
-							</p>
-						</div>
-					</div>
+					<ProductViewer3D />
 				</div>
 			</section>
 
