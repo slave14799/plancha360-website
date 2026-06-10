@@ -53,6 +53,21 @@ import ProductViewer3D from "../components/ProductViewer3D.astro";
 
 				<div class="hero-visual">
 					<ProductViewer3D />
+					<div class="visual-stack">
+						<div class="visual-card visual-card-large">
+							<img src="/images/lifestyle/plancha360-community.png" alt="A warm outdoor dinner around Plancha360" />
+						</div>
+						<aside class="hero-note">
+							<p class="eyebrow">Why the 3D view matters</p>
+							<h3>Let people inspect the product before they trust the photography.</h3>
+							<p>The viewer is doing the heavy lifting: size, stance, material feel, and how it anchors the scene.</p>
+							<ul class="viewer-points">
+								<li>Rotate to understand the proportions.</li>
+								<li>Compare the 700 and 900 stories visually.</li>
+								<li>See how the grill sets the mood of the whole page.</li>
+							</ul>
+						</aside>
+					</div>
 				</div>
 			</section>
 
@@ -429,17 +444,35 @@ import ProductViewer3D from "../components/ProductViewer3D.astro";
 
 	.hero-note {
 		display: grid;
-		align-content: end;
+		align-content: start;
+		gap: 12px;
 		padding: 22px;
 		border-radius: 24px;
 		background: linear-gradient(145deg, rgba(182, 83, 42, 0.12), rgba(47, 75, 69, 0.08));
 		border: 1px solid var(--border);
 	}
 
-	.hero-note p:last-child {
+	.hero-note h3 {
+		margin: 0;
+		font-size: 1.22rem;
+		line-height: 1.2;
+	}
+
+	.hero-note > p {
 		color: var(--muted);
 		line-height: 1.7;
 		margin-bottom: 0;
+	}
+
+	.viewer-points {
+		display: grid;
+		gap: 10px;
+		padding-left: 18px;
+		margin: 0;
+	}
+
+	.viewer-points li {
+		color: var(--text);
 	}
 
 	.intro-grid {
