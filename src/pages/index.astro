@@ -290,14 +290,14 @@ const faqItems = [
 						</ul>
 					</div>
 
-					<form class="waitlist-form">
+					<form class="waitlist-form" id="waitlist-form">
 						<label>
 							Name
-							<input type="text" name="name" placeholder="Your name" />
+							<input type="text" name="name" placeholder="Your name" required />
 						</label>
 						<label>
 							Email
-							<input type="email" name="email" placeholder="you@example.com" />
+							<input type="email" name="email" placeholder="you@example.com" required />
 						</label>
 						<label>
 							What are you planning?
@@ -312,8 +312,13 @@ const faqItems = [
 							Message
 							<textarea name="message" rows="5" placeholder="Tell us what you want to cook, host, or build around Plancha360."></textarea>
 						</label>
-						<button class="button button-primary full-width" type="submit">Join the waitlist</button>
+						<p class="waitlist-error" id="waitlist-error" hidden></p>
+						<button class="button button-primary full-width" type="submit" id="waitlist-submit">Join the waitlist</button>
 					</form>
+					<div class="waitlist-success" id="waitlist-success" hidden>
+						<p class="waitlist-success-title">You're on the list.</p>
+						<p>We'll be in touch with early access and launch pricing before August 2026.</p>
+					</div>
 				</div>
 			</section>
 
@@ -909,6 +914,31 @@ const faqItems = [
 		}
 	}
 
+	.waitlist-error {
+		grid-column: 1 / -1;
+		color: var(--accent);
+		font-size: 0.9rem;
+		line-height: 1.5;
+	}
+
+	.waitlist-success {
+		padding: 32px 8px;
+		text-align: center;
+	}
+
+	.waitlist-success-title {
+		font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+		font-size: 1.7rem;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		margin-bottom: 12px;
+	}
+
+	.waitlist-success p:last-child {
+		color: var(--muted);
+		line-height: 1.7;
+	}
+
 	@media (max-width: 720px) {
 		.site-shell {
 			padding: 20px 16px 72px;
@@ -947,3 +977,57 @@ const faqItems = [
 		}
 	}
 </style>
+
+<script>
+	const form = document.getElementById("waitlist-form") as HTMLFormElement | null;
+	const submitBtn = document.getElementById("waitlist-submit") as HTMLButtonElement | null;
+	const successEl = document.getElementById("waitlist-success") as HTMLElement | null;
+	const errorEl = document.getElementById("waitlist-error") as HTMLElement | null;
+
+	form?.addEventListener("submit", async (e) => {
+		e.preventDefault();
+
+		if (!form.checkValidity()) {
+			form.reportValidity();
+			return;
+		}
+
+		if (errorEl) errorEl.hidden = true;
+		if (submitBtn) {
+			submitBtn.disabled = true;
+			submitBtn.textContent = "Sending…";
+		}
+
+		try {
+			const res = await fetch("/api/waitlist", {
+				method: "POST",
+				body: new FormData(form),
+			});
+
+			const data = await res.json() as { success?: boolean; error?: string };
+
+			if (res.ok && data.success) {
+				form.hidden = true;
+				if (successEl) successEl.hidden = false;
+			} else {
+				if (errorEl) {
+					errorEl.textContent = (data as { error?: string }).error || "Something went wrong. Please try again.";
+					errorEl.hidden = false;
+				}
+				if (submitBtn) {
+					submitBtn.disabled = false;
+					submitBtn.textContent = "Join the waitlist";
+				}
+			}
+		} catch {
+			if (errorEl) {
+				errorEl.textContent = "Network error. Please try again.";
+				errorEl.hidden = false;
+			}
+			if (submitBtn) {
+				submitBtn.disabled = false;
+				submitBtn.textContent = "Join the waitlist";
+			}
+		}
+	});
+</script>
