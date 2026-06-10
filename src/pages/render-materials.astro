@@ -1,0 +1,216 @@
+---
+const title = "Plancha360 material test";
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+	</head>
+	<body>
+		<main class="stage">
+			<div class="label">First material pass · reference-driven steel palette</div>
+			<canvas id="c"></canvas>
+		</main>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+					"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+				}
+			}
+		</script>
+		<script type="module">
+			import * as THREE from "three";
+			import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+			import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+			import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+			const canvas = document.querySelector("#c");
+			const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+			renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+			renderer.outputColorSpace = THREE.SRGBColorSpace;
+			renderer.toneMapping = THREE.ACESFilmicToneMapping;
+			renderer.toneMappingExposure = 1.0;
+			renderer.shadowMap.enabled = true;
+			renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+			const scene = new THREE.Scene();
+			scene.background = new THREE.Color(0xe9dcc9);
+			scene.fog = new THREE.Fog(0xe9dcc9, 10, 30);
+
+			const camera = new THREE.PerspectiveCamera(28, 1, 0.01, 1000);
+			camera.position.set(3.2, 2.4, 3.9);
+
+			const controls = new OrbitControls(camera, renderer.domElement);
+			controls.enableDamping = true;
+			controls.enablePan = false;
+			controls.minDistance = 1.5;
+			controls.maxDistance = 20;
+			controls.target.set(0, 0.8, 0);
+
+			const pmrem = new THREE.PMREMGenerator(renderer);
+			scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+
+			const floor = new THREE.Mesh(
+				new THREE.CircleGeometry(14, 96),
+				new THREE.MeshStandardMaterial({ color: 0xd3c1aa, roughness: 1, metalness: 0 })
+			);
+			floor.rotation.x = -Math.PI / 2;
+			floor.position.y = -0.01;
+			floor.receiveShadow = true;
+			scene.add(floor);
+
+			const ambient = new THREE.HemisphereLight(0xfff2df, 0x7a5b3f, 2.0);
+			scene.add(ambient);
+
+			const key = new THREE.DirectionalLight(0xfff6ea, 3.8);
+			key.position.set(-3, 6, 4);
+			key.castShadow = true;
+			key.shadow.mapSize.set(2048, 2048);
+			scene.add(key);
+
+			const fill = new THREE.DirectionalLight(0xbad0e8, 1.4);
+			fill.position.set(5, 2, 2);
+			scene.add(fill);
+
+			const rim = new THREE.DirectionalLight(0xffffff, 0.8);
+			rim.position.set(0, 4, -5);
+			scene.add(rim);
+
+			const loader = new GLTFLoader();
+			const model = await loader.loadAsync("/3d/plancha360.glb");
+			const root = model.scene;
+			root.traverse((obj) => {
+				if (obj.isMesh) {
+					obj.castShadow = true;
+					obj.receiveShadow = true;
+					obj.geometry.computeBoundingBox();
+					const box = obj.geometry.boundingBox;
+					const size = new THREE.Vector3();
+					box.getSize(size);
+					const thickness = Math.min(size.x, size.y, size.z);
+					let material;
+					if (thickness < 55) {
+						material = new THREE.MeshPhysicalMaterial({
+							color: 0x5f6668,
+							metalness: 1,
+							roughness: 0.62,
+							sheen: 0,
+							clearcoat: 0.08,
+							clearcoatRoughness: 0.85,
+						});
+					} else {
+						material = new THREE.MeshPhysicalMaterial({
+							color: 0x111214,
+							metalness: 1,
+							roughness: 0.38,
+							clearcoat: 0.03,
+							clearcoatRoughness: 0.95,
+						});
+					}
+					obj.material = material;
+				}
+			});
+
+			// Add a warmer accent to the smallest horizontal mesh if present.
+			const meshes = [];
+			root.traverse((obj) => obj.isMesh && meshes.push(obj));
+			meshes.sort((a, b) => {
+				const ba = a.geometry.boundingBox, bb = b.geometry.boundingBox;
+				const sa = new THREE.Vector3(), sb = new THREE.Vector3();
+				ba.getSize(sa); bb.getSize(sb);
+				return Math.min(sa.x, sa.y, sa.z) - Math.min(sb.x, sb.y, sb.z);
+			});
+			if (meshes[0]) {
+				meshes[0].material = new THREE.MeshPhysicalMaterial({
+					color: 0x90733a,
+					metalness: 1,
+					roughness: 0.34,
+					clearcoat: 0.05,
+					clearcoatRoughness: 0.9,
+				});
+			}
+
+			scene.add(root);
+
+			// Frame the model.
+			const bbox = new THREE.Box3().setFromObject(root);
+			const size = new THREE.Vector3();
+			const center = new THREE.Vector3();
+			bbox.getSize(size);
+			bbox.getCenter(center);
+			const radius = size.length() * 0.5;
+			controls.target.copy(center);
+			camera.near = radius / 100;
+			camera.far = radius * 100;
+			camera.updateProjectionMatrix();
+			camera.position.copy(center).add(new THREE.Vector3(radius * 1.7, radius * 1.25, radius * 1.7));
+			controls.update();
+
+			window.__planchaDebug = {
+				camera: camera.position.clone(),
+				target: controls.target.clone(),
+				center: center.clone(),
+				size: size.clone(),
+				meshes: meshes.length,
+			};
+
+			function resize() {
+				const w = window.innerWidth;
+				const h = window.innerHeight;
+				renderer.setSize(w, h, false);
+				camera.aspect = w / h;
+				camera.updateProjectionMatrix();
+			}
+			window.addEventListener("resize", resize);
+			resize();
+
+			function animate() {
+				requestAnimationFrame(animate);
+				controls.update();
+				renderer.render(scene, camera);
+			}
+			animate();
+		</script>
+	</body>
+</html>
+
+<style>
+	:global(html, body) {
+		margin: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		background: radial-gradient(circle at 50% 40%, #f4ead9 0%, #e6d3bc 52%, #c8ad8c 100%);
+	}
+
+	.stage {
+		position: relative;
+		width: 100vw;
+		height: 100vh;
+	}
+
+	#c {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+
+	.label {
+		position: absolute;
+		top: 18px;
+		left: 18px;
+		z-index: 2;
+		padding: 8px 12px;
+		border-radius: 999px;
+		background: rgba(18, 14, 10, 0.72);
+		color: #f4ead9;
+		font: 600 12px/1.1 system-ui, sans-serif;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		backdrop-filter: blur(14px);
+	}
+</style>
