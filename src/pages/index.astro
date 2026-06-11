@@ -137,17 +137,36 @@ const pageDescription =
 		</section>
 
 		<section class="section waitlist" id="waitlist">
-			<div class="container waitlist-inner">
+			<div class="container">
+				<p class="batch-counter" id="batch-counter" hidden></p>
+				<div class="incentive-callout">
+					<svg
+						class="incentive-icon"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.8"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z" />
+						<circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" stroke="none" />
+					</svg>
+					<div>
+						<p class="incentive-title">€50 off for waitlist members</p>
+						<p class="incentive-sub">
+							Everyone who signs up gets €50 off the launch price. Applied automatically — no
+							code needed.
+						</p>
+					</div>
+				</div>
+				<div class="waitlist-inner">
 				<div class="waitlist-copy">
 					<p class="eyebrow">Launching August 2026</p>
 					<h2>Be first when Plancha360 opens.</h2>
 					<p class="lede">
 						The first grills ship in August 2026, in a limited first batch. Join the waitlist to
 						get early access, launch pricing, and updates as we go from prototype to product.
-					</p>
-					<p class="waitlist-incentive">
-						Everyone on the waitlist gets €50 off the launch price. No code needed — discount
-						applied automatically at checkout.
 					</p>
 				</div>
 
@@ -181,6 +200,7 @@ const pageDescription =
 				<div class="waitlist-success" id="waitlist-success" hidden>
 					<p class="waitlist-success-title">You're on the list.</p>
 					<p>We'll be in touch with early access and launch pricing before August 2026.</p>
+				</div>
 				</div>
 			</div>
 		</section>
@@ -468,13 +488,42 @@ const pageDescription =
 		margin-bottom: 24px;
 	}
 
-	.waitlist-incentive {
-		margin-top: 24px;
-		padding: 16px 20px;
-		border-left: 3px solid var(--color-accent);
-		background: var(--color-surface);
+	.batch-counter {
+		font-size: 0.95rem;
 		font-weight: 600;
+		color: var(--color-muted);
+		margin-bottom: 16px;
+	}
+
+	.incentive-callout {
+		display: flex;
+		align-items: center;
+		gap: clamp(20px, 3vw, 32px);
+		background: var(--color-accent);
+		color: #ffffff;
+		padding: clamp(28px, 4vw, 44px);
+		border-radius: 16px;
+		margin-bottom: clamp(40px, 6vw, 64px);
+	}
+
+	.incentive-icon {
+		width: clamp(40px, 5vw, 56px);
+		height: clamp(40px, 5vw, 56px);
+		flex-shrink: 0;
+	}
+
+	.incentive-title {
+		font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+		font-weight: 700;
+		letter-spacing: -0.015em;
+		margin-bottom: 8px;
+	}
+
+	.incentive-sub {
+		font-size: 1.05rem;
 		line-height: 1.6;
+		opacity: 0.92;
+		max-width: 65ch;
 	}
 
 	.waitlist-form {
@@ -553,6 +602,11 @@ const pageDescription =
 		.waitlist-form {
 			grid-template-columns: 1fr;
 		}
+
+		.incentive-callout {
+			flex-direction: column;
+			align-items: flex-start;
+		}
 	}
 </style>
 
@@ -573,6 +627,29 @@ const pageDescription =
 	const submitBtn = document.getElementById("waitlist-submit") as HTMLButtonElement | null;
 	const successEl = document.getElementById("waitlist-success") as HTMLElement | null;
 	const errorEl = document.getElementById("waitlist-error") as HTMLElement | null;
+	const counterEl = document.getElementById("batch-counter") as HTMLElement | null;
+
+	const BATCH_SIZE = 20;
+
+	// Shows only a real count from the API; stays hidden if none is available.
+	const loadBatchCount = async () => {
+		if (!counterEl) return;
+		try {
+			const res = await fetch("/api/waitlist");
+			if (!res.ok) return;
+			const data = (await res.json()) as { count?: number | null };
+			if (typeof data.count !== "number") return;
+			counterEl.textContent =
+				data.count === 0
+					? `${BATCH_SIZE} first-batch spots available`
+					: `${Math.min(data.count, BATCH_SIZE)} of ${BATCH_SIZE} first-batch spots reserved`;
+			counterEl.hidden = false;
+		} catch {
+			// no count available — leave the line hidden
+		}
+	};
+
+	loadBatchCount();
 
 	form?.addEventListener("submit", async (e) => {
 		e.preventDefault();
@@ -599,6 +676,7 @@ const pageDescription =
 			if (res.ok && data.success) {
 				form.hidden = true;
 				if (successEl) successEl.hidden = false;
+				loadBatchCount();
 			} else {
 				if (errorEl) {
 					errorEl.textContent = (data as { error?: string }).error || "Something went wrong. Please try again.";

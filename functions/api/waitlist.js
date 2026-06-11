@@ -1,3 +1,27 @@
+const COUNT_KEY = "signup-count";
+
+async function readCount(kv) {
+	const raw = await kv.get(COUNT_KEY);
+	const n = parseInt(raw, 10);
+	return Number.isFinite(n) ? n : 0;
+}
+
+// Returns the real signup count, or null when the KV binding is not
+// configured — the frontend hides the counter rather than show a fake number.
+export async function onRequestGet(context) {
+	const kv = context.env.WAITLIST_KV;
+	if (!kv) {
+		return Response.json({ count: null }, { headers: { "Cache-Control": "no-store" } });
+	}
+	try {
+		const count = await readCount(kv);
+		return Response.json({ count }, { headers: { "Cache-Control": "no-store" } });
+	} catch (err) {
+		console.error("KV read failed:", err);
+		return Response.json({ count: null }, { headers: { "Cache-Control": "no-store" } });
+	}
+}
+
 export async function onRequestPost(context) {
 	const { request, env } = context;
 
@@ -91,6 +115,20 @@ export async function onRequestPost(context) {
 		const detail = await resendRes.text().catch(() => "");
 		console.error("Resend error", resendRes.status, detail);
 		return Response.json({ error: "Failed to send. Please try again." }, { status: 502 });
+	}
+
+	// The signup has succeeded at this point; count it. A failure here must
+	// not fail the request.
+	try {
+		const kv = env.WAITLIST_KV;
+		if (kv) {
+			const count = await readCount(kv);
+			await kv.put(COUNT_KEY, String(count + 1));
+		} else {
+			console.error("WAITLIST_KV binding missing — signup not counted");
+		}
+	} catch (err) {
+		console.error("KV increment failed:", err);
 	}
 
 	// Confirmation email to the person signing up. The signup itself has
