@@ -183,12 +183,12 @@ a {
 }
 
 .button-primary {
-	background: var(--color-text);
-	color: var(--color-bg);
+	background: var(--color-accent);
+	color: #ffffff;
 }
 
 .button-primary:hover {
-	background: var(--color-accent);
+	background: #9c4523;
 	color: #ffffff;
 }
 
