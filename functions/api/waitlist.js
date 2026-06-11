@@ -93,6 +93,53 @@ export async function onRequestPost(context) {
 		return Response.json({ error: "Failed to send. Please try again." }, { status: 502 });
 	}
 
+	// Confirmation email to the person signing up. The signup itself has
+	// succeeded at this point, so a failure here must not fail the request.
+	const confirmationText = [
+		`Hi ${name},`,
+		``,
+		`You're on the list. We'll reach out before August 2026 when the first Plancha360 grills are ready.`,
+		``,
+		`As an early supporter, you get €50 off the launch price — automatically applied when ordering opens. No code needed.`,
+		``,
+		`If you have questions in the meantime, just reply to this email.`,
+		``,
+		`— Tim, Plancha360`,
+	].join("\n");
+
+	const confirmationHtml = `
+<div style="font-family:sans-serif;font-size:15px;line-height:1.6;max-width:480px">
+  <p>Hi ${esc(name)},</p>
+  <p>You're on the list. We'll reach out before August 2026 when the first Plancha360 grills are ready.</p>
+  <p>As an early supporter, you get €50 off the launch price — automatically applied when ordering opens. No code needed.</p>
+  <p>If you have questions in the meantime, just reply to this email.</p>
+  <p>— Tim, Plancha360</p>
+</div>`;
+
+	try {
+		const confirmRes = await fetch("https://api.resend.com/emails", {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${apiKey}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				from: "Tim from Plancha360 <tim@plancha360.com>",
+				to: [email],
+				reply_to: "tim@plancha360.com",
+				subject: "You're on the Plancha360 list.",
+				text: confirmationText,
+				html: confirmationHtml,
+			}),
+		});
+		if (!confirmRes.ok) {
+			const detail = await confirmRes.text().catch(() => "");
+			console.error("Confirmation email error", confirmRes.status, detail);
+		}
+	} catch (err) {
+		console.error("Confirmation email fetch failed:", err);
+	}
+
 	return Response.json({ success: true });
 }
 

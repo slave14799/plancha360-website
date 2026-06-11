@@ -125,6 +125,9 @@ Plancha360 is made from solid steel with no electronics to fail and parts that a
 **Body:**
 The first grills ship in August 2026, in a limited first batch. Join the waitlist to get early access, launch pricing, and updates as we go from prototype to product.
 
+**Incentive (prominent, above/near the form):**
+Everyone on the waitlist gets €50 off the launch price. No code needed — discount applied automatically at checkout.
+
 **Form fields:**
 - Name
 - Email

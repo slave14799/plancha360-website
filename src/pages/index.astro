@@ -145,6 +145,10 @@ const pageDescription =
 						The first grills ship in August 2026, in a limited first batch. Join the waitlist to
 						get early access, launch pricing, and updates as we go from prototype to product.
 					</p>
+					<p class="waitlist-incentive">
+						Everyone on the waitlist gets €50 off the launch price. No code needed — discount
+						applied automatically at checkout.
+					</p>
 				</div>
 
 				<form class="waitlist-form" id="waitlist-form">
@@ -464,10 +468,25 @@ const pageDescription =
 		margin-bottom: 24px;
 	}
 
+	.waitlist-incentive {
+		margin-top: 24px;
+		padding: 16px 20px;
+		border-left: 3px solid var(--color-accent);
+		background: var(--color-surface);
+		font-weight: 600;
+		line-height: 1.6;
+	}
+
 	.waitlist-form {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 20px;
+	}
+
+	/* display: grid above beats the UA rule for [hidden]; restore it so
+	   form.hidden = true actually hides the form after submission */
+	.waitlist-form[hidden] {
+		display: none;
 	}
 
 	.full-width {
