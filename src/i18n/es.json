@@ -1,0 +1,78 @@
+{
+	"meta": {
+		"title": "Plancha360 — La plancha para estar alrededor, no detrás.",
+		"description": "Plancha360 es una plancha redonda de gas, pensada para cocinar fuera como de verdad apetece: en compañía. Todos alrededor de la misma superficie, la comida en el centro, una bebida en la mano y el anfitrión incluido."
+	},
+	"nav": {
+		"product": "Producto",
+		"story": "La historia",
+		"waitlist": "Lista de espera",
+		"langToggle": "EN",
+		"langToggleLabel": "Switch to the English version"
+	},
+	"hero": {
+		"headline": "La plancha para estar alrededor, no detrás.",
+		"subline": "Plancha360 es una plancha redonda de gas, pensada para cocinar fuera como de verdad apetece: en compañía. Todos alrededor de la misma superficie, la comida en el centro, una bebida en la mano y el anfitrión incluido.",
+		"ctaPrimary": "Únete a la lista de espera",
+		"ctaSecondary": "Descubre el producto"
+	},
+	"story": {
+		"eyebrow": "Dónde empezó todo",
+		"headline": "Diez años de veladas mejores.",
+		"p1": "Plancha360 no empezó como un negocio. Empezó en el jardín de mis padres, en Alemania. Hace diez años, mi padre encargó una plancha redonda a un metalúrgico que las fabricaba por afición. Cada cumpleaños, cada reunión, cada vez que venía gente a casa, aquella plancha era el centro de la velada.",
+		"p2": "Lo que se me quedó grabado no fue la comida. Fue que nadie se quedaba fuera. Podías cocinar y charlar a la vez, cerveza en mano, todos reunidos alrededor de la misma superficie, en lugar de una persona aislada frente a una barbacoa rectangular mientras la fiesta seguía sin ella.",
+		"p3": "Cuando me mudé a Barcelona en 2022, me enamoré de la forma española de comer: largas veladas al aire libre, tapas que duran horas, la comida como motivo para que todos se queden en la mesa. Y me di cuenta de que esta plancha, la que llevábamos una década disfrutando en Alemania, pertenecía aquí. Un producto hecho exactamente para este tipo de veladas, en un país que vive para ellas.",
+		"p4": "Las barbacoas de carbón están prohibidas en muchos centros urbanos por el humo. Barcelona está llena de terrazas y azoteas donde no se puede cocinar. Plancha360 funciona con gas — se calienta rápido, apenas hace humo y se limpia fácil —, y eso hace posible cocinar al aire libre en compañía incluso en pleno centro de la ciudad.",
+		"p5": "Por eso existe Plancha360. Para traer un secreto de los jardines alemanes a las veladas españolas.",
+		"signature": "— Tim, fundador"
+	},
+	"models": {
+		"headline": "Dos tamaños. La misma idea.",
+		"model700Name": "Modelo 700",
+		"model700Alt": "Plancha360 Modelo 700",
+		"model700Description": "Superficie de cocción de 70 cm. Pensada para terrazas, grupos pequeños y montajes más sencillos. Incluye dos espátulas de plancha.",
+		"model700Price": "Desde 500 €",
+		"model900Name": "Modelo 900",
+		"model900Alt": "Plancha360 Modelo 900",
+		"model900Description": "Superficie de cocción de 90 cm. Pensada para reuniones grandes y para quien recibe en serio. Incluye cuatro espátulas de plancha.",
+		"model900Price": "Desde 650 €",
+		"note": "Ambos modelos llegan como plancha completa con quemador paellero incluido. ¿Ya tienes un quemador compatible? Pídela sin él por menos. También hay una funda de acero inoxidable disponible por separado para guardarla fuera todo el año."
+	},
+	"value": {
+		"headline": "Hecha para la gente que recibe en casa.",
+		"lede": "Si te encanta ser quien reúne a la gente — cenas largas al aire libre, amigos en el jardín, comidas que se convierten en velada —, esto está hecho para ti. No es un objeto de lujo para presumir. Es una herramienta que hace aún mejores las reuniones que ya te encantan.",
+		"point1Title": "Social por diseño",
+		"point1Text": "Cocina y sigue la conversación al mismo tiempo.",
+		"point2Title": "Práctica para la vida real",
+		"point2Text": "Calor rápido, poco humo, limpieza fácil. Úsala un martes cualquiera, no solo en los cumpleaños.",
+		"point3Title": "Hecha para durar",
+		"point3Text": "Acero macizo, fabricada en España, construida para durar más que todas las barbacoas que has tenido."
+	},
+	"waitlist": {
+		"incentiveTitle": "50 € de descuento para la lista de espera",
+		"incentiveSub": "Todos los que se apunten tendrán 50 € de descuento sobre el precio de lanzamiento. Se aplica automáticamente, sin códigos.",
+		"eyebrow": "Lanzamiento en agosto de 2026",
+		"headline": "Sé el primero cuando llegue Plancha360.",
+		"lede": "Las primeras planchas se enviarán en agosto de 2026, en un primer lote limitado. Únete a la lista de espera para conseguir acceso anticipado, precio de lanzamiento y novedades mientras pasamos de prototipo a producto.",
+		"formName": "Nombre",
+		"formEmail": "Email",
+		"formIntent": "¿Qué tienes en mente?",
+		"intentHosting": "Recibir en casa",
+		"intentGift": "Comprarla como regalo",
+		"intentEvent": "Interés para eventos o alquiler",
+		"intentCurious": "Solo curiosidad",
+		"formMessage": "Mensaje (opcional)",
+		"submit": "Únete a la lista de espera",
+		"successTitle": "Ya estás en la lista.",
+		"successText": "Te escribiremos con el acceso anticipado y el precio de lanzamiento antes de agosto de 2026.",
+		"sending": "Enviando…",
+		"errorGeneric": "Algo ha salido mal. Inténtalo de nuevo.",
+		"errorNetwork": "Error de red. Inténtalo de nuevo.",
+		"spotsAvailable": "{batch} plazas disponibles en el primer lote",
+		"spotsReserved": "{count} de {batch} plazas del primer lote reservadas"
+	},
+	"footer": {
+		"line1": "Plancha360 — Cocina al aire libre, hecha para compartir.",
+		"line2": "Fabricada en España. Lanzamiento en 2026."
+	}
+}

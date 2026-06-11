@@ -1,0 +1,695 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProductViewer3D from "./ProductViewer3D.astro";
+import { images } from "../data/images";
+import { useTranslations, alternatePath, type Lang } from "../i18n/utils";
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Strings the waitlist client script needs at runtime, delivered via a JSON
+// data island so the script itself stays language-agnostic.
+const waitlistRuntime = {
+	sending: t("waitlist.sending"),
+	errorGeneric: t("waitlist.errorGeneric"),
+	errorNetwork: t("waitlist.errorNetwork"),
+	submit: t("waitlist.submit"),
+	spotsAvailable: t("waitlist.spotsAvailable"),
+	spotsReserved: t("waitlist.spotsReserved"),
+};
+---
+
+<BaseLayout title={t("meta.title")} description={t("meta.description")} lang={lang}>
+	<header class="site-header" id="site-header">
+		<div class="container header-inner">
+			<a class="brand" href="#top" aria-label="Plancha360 home">
+				<img src={images.logo} alt="Plancha360" />
+			</a>
+			<nav aria-label="Primary">
+				<a href="#product">{t("nav.product")}</a>
+				<a href="#story">{t("nav.story")}</a>
+				<a class="nav-pill" href="#waitlist">{t("nav.waitlist")}</a>
+				<a class="lang-toggle" href={alternatePath(lang)} aria-label={t("nav.langToggleLabel")}>
+					{t("nav.langToggle")}
+				</a>
+			</nav>
+		</div>
+	</header>
+
+	<main id="top">
+		<section class="hero" id="hero">
+			<div class="hero-bg" style={`background-image: url('${images.lifestyleCommunity}')`}></div>
+			<div class="container hero-content">
+				<h1>{t("hero.headline")}</h1>
+				<p class="hero-subline">{t("hero.subline")}</p>
+				<div class="hero-actions">
+					<a class="button button-primary" href="#waitlist">{t("hero.ctaPrimary")}</a>
+					<a class="button button-ghost" href="#product">{t("hero.ctaSecondary")}</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="section story" id="story">
+			<div class="container story-inner">
+				<header class="story-header">
+					<p class="eyebrow">{t("story.eyebrow")}</p>
+					<h2>{t("story.headline")}</h2>
+				</header>
+				<div class="story-body">
+					<p>{t("story.p1")}</p>
+					<p>{t("story.p2")}</p>
+					<p>{t("story.p3")}</p>
+					<p>{t("story.p4")}</p>
+					<p>{t("story.p5")}</p>
+					<p class="story-signature">{t("story.signature")}</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section models" id="product">
+			<div class="container">
+				<h2 class="models-headline">{t("models.headline")}</h2>
+				<div class="product-viewer">
+					<ProductViewer3D />
+				</div>
+				<div class="models-grid">
+					<article class="model-card">
+						<img src={images.model700} alt={t("models.model700Alt")} loading="lazy" />
+						<h3>{t("models.model700Name")}</h3>
+						<p>{t("models.model700Description")}</p>
+						<p class="model-price">{t("models.model700Price")}</p>
+					</article>
+					<article class="model-card">
+						<img src={images.model900} alt={t("models.model900Alt")} loading="lazy" />
+						<h3>{t("models.model900Name")}</h3>
+						<p>{t("models.model900Description")}</p>
+						<p class="model-price">{t("models.model900Price")}</p>
+					</article>
+				</div>
+				<p class="models-note muted">{t("models.note")}</p>
+			</div>
+		</section>
+
+		<section class="section value">
+			<div class="container value-inner">
+				<div class="value-copy">
+					<h2>{t("value.headline")}</h2>
+					<p class="lede">{t("value.lede")}</p>
+				</div>
+				<ul class="value-points">
+					<li>
+						<h3>{t("value.point1Title")}</h3>
+						<p>{t("value.point1Text")}</p>
+					</li>
+					<li>
+						<h3>{t("value.point2Title")}</h3>
+						<p>{t("value.point2Text")}</p>
+					</li>
+					<li>
+						<h3>{t("value.point3Title")}</h3>
+						<p>{t("value.point3Text")}</p>
+					</li>
+				</ul>
+			</div>
+		</section>
+
+		<section class="section waitlist" id="waitlist">
+			<div class="container">
+				<p class="batch-counter" id="batch-counter" hidden></p>
+				<div class="incentive-callout">
+					<svg
+						class="incentive-icon"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.8"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z" />
+						<circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" stroke="none" />
+					</svg>
+					<div>
+						<p class="incentive-title">{t("waitlist.incentiveTitle")}</p>
+						<p class="incentive-sub">{t("waitlist.incentiveSub")}</p>
+					</div>
+				</div>
+				<div class="waitlist-inner">
+				<div class="waitlist-copy">
+					<p class="eyebrow">{t("waitlist.eyebrow")}</p>
+					<h2>{t("waitlist.headline")}</h2>
+					<p class="lede">{t("waitlist.lede")}</p>
+				</div>
+
+				<form class="waitlist-form" id="waitlist-form">
+					<label>
+						{t("waitlist.formName")}
+						<input type="text" name="name" required />
+					</label>
+					<label>
+						{t("waitlist.formEmail")}
+						<input type="email" name="email" required />
+					</label>
+					<label class="full-width">
+						{t("waitlist.formIntent")}
+						<select name="intent">
+							<option value="Hosting at home">{t("waitlist.intentHosting")}</option>
+							<option value="Buying as a gift">{t("waitlist.intentGift")}</option>
+							<option value="Event or rental interest">{t("waitlist.intentEvent")}</option>
+							<option value="Just curious">{t("waitlist.intentCurious")}</option>
+						</select>
+					</label>
+					<label class="full-width">
+						{t("waitlist.formMessage")}
+						<textarea name="message" rows="5"></textarea>
+					</label>
+					<p class="waitlist-error" id="waitlist-error" hidden></p>
+					<button class="button button-primary full-width" type="submit" id="waitlist-submit">
+						{t("waitlist.submit")}
+					</button>
+				</form>
+				<div class="waitlist-success" id="waitlist-success" hidden>
+					<p class="waitlist-success-title">{t("waitlist.successTitle")}</p>
+					<p>{t("waitlist.successText")}</p>
+				</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<div class="container">
+			<p>{t("footer.line1")}</p>
+			<p class="muted">{t("footer.line2")}</p>
+		</div>
+	</footer>
+
+	<script
+		type="application/json"
+		id="waitlist-i18n"
+		is:inline
+		set:html={JSON.stringify(waitlistRuntime)}
+	></script>
+</BaseLayout>
+
+<style>
+	/* ---------- Header ---------- */
+
+	.site-header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 100;
+		padding-block: 16px;
+		background: transparent;
+		transition: background-color 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.site-header.scrolled {
+		background: var(--color-bg);
+		box-shadow: 0 1px 12px rgba(26, 23, 20, 0.08);
+	}
+
+	.header-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.brand img {
+		height: 32px;
+		width: auto;
+	}
+
+	nav {
+		display: flex;
+		align-items: center;
+		gap: 32px;
+		flex-wrap: wrap;
+	}
+
+	nav a:not(.nav-pill) {
+		font-size: 0.95rem;
+		font-weight: 500;
+		color: rgba(255, 255, 255, 0.85);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	nav a:not(.nav-pill):hover {
+		color: #ffffff;
+	}
+
+	.site-header.scrolled nav a:not(.nav-pill) {
+		color: var(--color-muted);
+	}
+
+	.site-header.scrolled nav a:not(.nav-pill):hover {
+		color: var(--color-text);
+	}
+
+	.nav-pill {
+		display: inline-flex;
+		align-items: center;
+		padding: 8px 20px;
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: #ffffff;
+		background: var(--color-accent);
+		border-radius: 999px;
+		text-decoration: none;
+		transition: background-color 0.2s ease;
+	}
+
+	.nav-pill:hover {
+		background: #9c4523;
+	}
+
+	nav a.lang-toggle {
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+	}
+
+	/* ---------- Hero ---------- */
+
+	.hero {
+		position: relative;
+		min-height: 100vh;
+		min-height: 100svh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #1a1714;
+		overflow: hidden;
+	}
+
+	.hero-bg {
+		position: absolute;
+		inset: 0;
+		background-size: cover;
+		background-position: center;
+	}
+
+	.hero-bg::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.45);
+	}
+
+	.hero-content {
+		position: relative;
+		text-align: center;
+		padding-block: 120px;
+	}
+
+	.hero-content h1 {
+		font-size: clamp(3rem, 7vw, 6rem);
+		font-weight: 700;
+		letter-spacing: -0.03em;
+		color: #ffffff;
+		margin-bottom: 28px;
+	}
+
+	.hero-subline {
+		font-size: var(--text-lede);
+		line-height: 1.6;
+		color: rgba(255, 255, 255, 0.7);
+		max-width: 65ch;
+		margin-inline: auto;
+		margin-bottom: 40px;
+	}
+
+	.hero-actions {
+		display: flex;
+		gap: 16px;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.button-ghost {
+		background: transparent;
+		color: #ffffff;
+		border-color: rgba(255, 255, 255, 0.7);
+	}
+
+	.button-ghost:hover {
+		border-color: #ffffff;
+		background: rgba(255, 255, 255, 0.1);
+	}
+
+	/* Anchored sections clear the fixed header */
+	.models,
+	.story,
+	.waitlist {
+		scroll-margin-top: 72px;
+	}
+
+	/* ---------- Story ---------- */
+
+	.story-inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+		gap: clamp(32px, 5vw, 72px);
+		align-items: start;
+	}
+
+	.story-header h2 {
+		margin-bottom: 0;
+	}
+
+	.story-body p {
+		margin-bottom: 24px;
+		color: var(--color-muted);
+	}
+
+	.story-body p:first-child {
+		color: var(--color-text);
+	}
+
+	.story-signature {
+		font-weight: 600;
+		color: var(--color-text);
+	}
+
+	.story-body p:last-child {
+		margin-bottom: 0;
+	}
+
+	/* ---------- Models ---------- */
+
+	.models-headline {
+		margin-bottom: clamp(32px, 4vw, 56px);
+	}
+
+	.product-viewer {
+		margin-bottom: clamp(40px, 5vw, 72px);
+	}
+
+	.models-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(24px, 3vw, 40px);
+	}
+
+	.model-card {
+		background: var(--color-surface);
+		padding: clamp(24px, 3vw, 40px);
+		border-radius: 4px;
+	}
+
+	.model-card img {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: contain;
+		margin-bottom: 24px;
+	}
+
+	.model-card h3 {
+		margin-bottom: 12px;
+	}
+
+	.model-card p {
+		color: var(--color-muted);
+	}
+
+	.model-card .model-price {
+		margin-top: 16px;
+		font-weight: 700;
+		color: var(--color-accent);
+	}
+
+	.models-note {
+		margin-top: clamp(24px, 3vw, 40px);
+		font-size: 0.95rem;
+	}
+
+	/* ---------- Value ---------- */
+
+	.value-inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+		gap: clamp(32px, 5vw, 72px);
+		align-items: start;
+	}
+
+	.value-copy h2 {
+		margin-bottom: 24px;
+	}
+
+	.value-points {
+		list-style: none;
+		display: grid;
+		gap: 32px;
+	}
+
+	.value-points h3 {
+		margin-bottom: 8px;
+	}
+
+	.value-points p {
+		color: var(--color-muted);
+	}
+
+	/* ---------- Waitlist ---------- */
+
+	.waitlist-inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+		gap: clamp(32px, 5vw, 72px);
+		align-items: start;
+	}
+
+	.waitlist-copy h2 {
+		margin-bottom: 24px;
+	}
+
+	.batch-counter {
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--color-muted);
+		margin-bottom: 16px;
+	}
+
+	.incentive-callout {
+		display: flex;
+		align-items: center;
+		gap: clamp(20px, 3vw, 32px);
+		background: var(--color-accent);
+		color: #ffffff;
+		padding: clamp(28px, 4vw, 44px);
+		border-radius: 16px;
+		margin-bottom: clamp(40px, 6vw, 64px);
+	}
+
+	.incentive-icon {
+		width: clamp(40px, 5vw, 56px);
+		height: clamp(40px, 5vw, 56px);
+		flex-shrink: 0;
+	}
+
+	.incentive-title {
+		font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+		font-weight: 700;
+		letter-spacing: -0.015em;
+		margin-bottom: 8px;
+	}
+
+	.incentive-sub {
+		font-size: 1.05rem;
+		line-height: 1.6;
+		opacity: 0.92;
+		max-width: 65ch;
+	}
+
+	.waitlist-form {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 20px;
+	}
+
+	/* display: grid above beats the UA rule for [hidden]; restore it so
+	   form.hidden = true actually hides the form after submission */
+	.waitlist-form[hidden] {
+		display: none;
+	}
+
+	.full-width {
+		grid-column: 1 / -1;
+	}
+
+	.waitlist-error {
+		grid-column: 1 / -1;
+		color: var(--color-accent);
+		font-size: 0.9rem;
+		line-height: 1.5;
+	}
+
+	.waitlist-success {
+		padding: 48px 0;
+	}
+
+	.waitlist-success-title {
+		font-size: var(--text-h3);
+		font-weight: 700;
+		letter-spacing: -0.015em;
+		margin-bottom: 12px;
+	}
+
+	.waitlist-success p:last-child {
+		color: var(--color-muted);
+	}
+
+	/* ---------- Footer ---------- */
+
+	.site-footer {
+		padding-block: clamp(48px, 6vw, 80px);
+		border-top: 1px solid rgba(26, 23, 20, 0.1);
+	}
+
+	.site-footer p:first-child {
+		font-weight: 600;
+		margin-bottom: 8px;
+	}
+
+	/* ---------- Responsive ---------- */
+
+	@media (max-width: 980px) {
+		.story-inner,
+		.value-inner,
+		.waitlist-inner {
+			grid-template-columns: 1fr;
+		}
+
+		.models-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.site-header {
+			padding-block: 12px;
+		}
+
+		nav {
+			gap: 16px;
+		}
+
+		.waitlist-form {
+			grid-template-columns: 1fr;
+		}
+
+		.incentive-callout {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>
+
+<script>
+	const header = document.getElementById("site-header");
+	const hero = document.getElementById("hero");
+
+	const updateHeader = () => {
+		if (!header || !hero) return;
+		header.classList.toggle("scrolled", window.scrollY > hero.offsetHeight - 72);
+	};
+
+	updateHeader();
+	window.addEventListener("scroll", updateHeader, { passive: true });
+	window.addEventListener("resize", updateHeader, { passive: true });
+
+	const form = document.getElementById("waitlist-form") as HTMLFormElement | null;
+	const submitBtn = document.getElementById("waitlist-submit") as HTMLButtonElement | null;
+	const successEl = document.getElementById("waitlist-success") as HTMLElement | null;
+	const errorEl = document.getElementById("waitlist-error") as HTMLElement | null;
+	const counterEl = document.getElementById("batch-counter") as HTMLElement | null;
+
+	// Per-language UI strings rendered into the page by HomePage.astro
+	const i18nEl = document.getElementById("waitlist-i18n");
+	const T = JSON.parse(i18nEl?.textContent || "{}") as Record<string, string>;
+
+	const BATCH_SIZE = 20;
+
+	// Shows only a real count from the API; stays hidden if none is available.
+	const loadBatchCount = async () => {
+		if (!counterEl) return;
+		try {
+			const res = await fetch("/api/waitlist");
+			if (!res.ok) return;
+			const data = (await res.json()) as { count?: number | null };
+			if (typeof data.count !== "number") return;
+			counterEl.textContent =
+				data.count === 0
+					? T.spotsAvailable.replace("{batch}", String(BATCH_SIZE))
+					: T.spotsReserved
+							.replace("{count}", String(Math.min(data.count, BATCH_SIZE)))
+							.replace("{batch}", String(BATCH_SIZE));
+			counterEl.hidden = false;
+		} catch {
+			// no count available — leave the line hidden
+		}
+	};
+
+	loadBatchCount();
+
+	form?.addEventListener("submit", async (e) => {
+		e.preventDefault();
+
+		if (!form.checkValidity()) {
+			form.reportValidity();
+			return;
+		}
+
+		if (errorEl) errorEl.hidden = true;
+		if (submitBtn) {
+			submitBtn.disabled = true;
+			submitBtn.textContent = T.sending;
+		}
+
+		try {
+			const res = await fetch("/api/waitlist", {
+				method: "POST",
+				body: new FormData(form),
+			});
+
+			const data = await res.json() as { success?: boolean; error?: string };
+
+			if (res.ok && data.success) {
+				form.hidden = true;
+				if (successEl) successEl.hidden = false;
+				loadBatchCount();
+			} else {
+				if (errorEl) {
+					errorEl.textContent = (data as { error?: string }).error || T.errorGeneric;
+					errorEl.hidden = false;
+				}
+				if (submitBtn) {
+					submitBtn.disabled = false;
+					submitBtn.textContent = T.submit;
+				}
+			}
+		} catch {
+			if (errorEl) {
+				errorEl.textContent = T.errorNetwork;
+				errorEl.hidden = false;
+			}
+			if (submitBtn) {
+				submitBtn.disabled = false;
+				submitBtn.textContent = T.submit;
+			}
+		}
+	});
+</script>
