@@ -6,6 +6,7 @@ const { class: className = "" } = Astro.props;
 	<div class="viewer-frame">
 		<model-viewer
 			src="/3d/plancha360.glb"
+			scale="0.001 0.001 0.001"
 			camera-controls
 			disable-pan
 			camera-orbit="45deg 65deg 3.8m"
