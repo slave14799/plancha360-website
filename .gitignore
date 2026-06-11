@@ -2,8 +2,11 @@
 node_modules/
 dist/
 .astro/
+.npm-cache/
+.wrangler/
 .env
 .env.*
+!.env.example
 .DS_Store
 smoggy-series/
 tmp_step/

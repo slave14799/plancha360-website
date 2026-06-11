@@ -32,6 +32,7 @@ const waitlistRuntime = {
 			<nav aria-label="Primary">
 				<a href="#product">{t("nav.product")}</a>
 				<a href="#story">{t("nav.story")}</a>
+				<a href="/blog">{t("nav.blog")}</a>
 				<a class="nav-pill" href="#waitlist">{t("nav.waitlist")}</a>
 				<a class="lang-toggle" href={alternatePath(lang)} aria-label={t("nav.langToggleLabel")}>
 					{t("nav.langToggle")}
@@ -619,7 +620,7 @@ const waitlistRuntime = {
 
 	// Per-language UI strings rendered into the page by HomePage.astro
 	const i18nEl = document.getElementById("waitlist-i18n");
-	const T = JSON.parse(i18nEl?.textContent || "{}") as Record<string, string>;
+	const T = JSON.parse(i18nEl?.textContent || "{}");
 
 	const BATCH_SIZE = 20;
 

@@ -1,0 +1,213 @@
+---
+import { sanityClient } from "sanity:client";
+import imageUrlBuilder from "@sanity/image-url";
+import groq from "groq";
+import { PortableText } from "astro-portabletext";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SanityPortableImage from "../../components/SanityPortableImage.astro";
+
+type Category = "recipe" | "tips" | "general";
+
+type Post = {
+	title: string;
+	publishedAt?: string;
+	category: Category;
+	excerpt?: string;
+	mainImage?: {
+		asset?: unknown;
+		alt?: string;
+	};
+	body?: unknown[];
+	seoTitle?: string;
+	seoDescription?: string;
+};
+
+type PostPath = {
+	slug: string;
+};
+
+export async function getStaticPaths() {
+	const paths = await sanityClient.fetch(
+		groq`*[_type == "post" && defined(slug.current)] {
+			"slug": slug.current
+		}`,
+	) as PostPath[];
+
+	return paths.map((postPath) => ({
+		params: {
+			slug: postPath.slug,
+		},
+	}));
+}
+
+const categoryLabels = {
+	recipe: "Recipe",
+	tips: "Tips & Tricks",
+	general: "General",
+} satisfies { [key in Category]: string };
+
+const { slug } = Astro.params;
+
+const post = await sanityClient.fetch(
+	groq`*[_type == "post" && slug.current == $slug][0] {
+		title,
+		publishedAt,
+		category,
+		excerpt,
+		mainImage,
+		body,
+		seoTitle,
+		seoDescription
+	}`,
+	{ slug },
+) as Post | null;
+
+if (!post) {
+	return new Response(null, { status: 404 });
+}
+
+const imageBuilder = imageUrlBuilder({
+	projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
+	dataset: import.meta.env.PUBLIC_SANITY_DATASET,
+});
+
+const portableTextComponents = {
+	type: {
+		image: SanityPortableImage,
+	},
+};
+
+function imageUrl(source: unknown) {
+	return imageBuilder.image(source).width(1800).height(960).fit("crop").auto("format").url();
+}
+
+function formatDate(date?: string) {
+	if (!date) return "";
+	return new Intl.DateTimeFormat("en", {
+		month: "long",
+		day: "numeric",
+		year: "numeric",
+	}).format(new Date(date));
+}
+
+const pageTitle = post.seoTitle ?? `${post.title} | Plancha360`;
+const pageDescription = post.seoDescription ?? post.excerpt ?? "Recipes, tips, and stories from Plancha360.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+	<main class="post-page">
+		<article>
+			<header class="post-hero">
+				{
+					post.mainImage?.asset ? (
+						<img src={imageUrl(post.mainImage)} alt={post.mainImage.alt ?? post.title} />
+					) : (
+						<div class="img-placeholder">[blog-main-image]</div>
+					)
+				}
+				<div class="container post-hero-content">
+					<a class="back-link" href="/blog">Back to Blog</a>
+					<div class="post-meta">
+						<span class="category-badge">{categoryLabels[post.category]}</span>
+						{post.publishedAt ? <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time> : null}
+					</div>
+					<h1>{post.title}</h1>
+				</div>
+			</header>
+
+			<div class="container post-body">
+				{post.body?.length ? <PortableText value={post.body} components={portableTextComponents} /> : null}
+			</div>
+		</article>
+	</main>
+</BaseLayout>
+
+<style>
+	.post-page {
+		background: var(--color-bg);
+		min-height: 100vh;
+	}
+
+	.post-hero {
+		background: var(--color-dark);
+		color: #ffffff;
+	}
+
+	.post-hero > img,
+	.post-hero > .img-placeholder {
+		width: 100%;
+		height: clamp(320px, 52vw, 620px);
+		object-fit: cover;
+	}
+
+	.post-hero-content {
+		display: grid;
+		gap: 20px;
+		padding-block: clamp(40px, 7vw, 84px);
+	}
+
+	.back-link {
+		width: fit-content;
+		color: rgba(255, 255, 255, 0.78);
+		font-size: 0.95rem;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.back-link:hover {
+		color: #ffffff;
+	}
+
+	.post-meta {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		color: rgba(255, 255, 255, 0.72);
+		font-size: 0.9rem;
+	}
+
+	.category-badge {
+		color: var(--color-accent);
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.post-hero h1 {
+		max-width: 920px;
+	}
+
+	.post-body {
+		max-width: 780px;
+		padding-block: clamp(52px, 8vw, 96px);
+	}
+
+	.post-body :global(p),
+	.post-body :global(ul),
+	.post-body :global(ol) {
+		margin-top: 22px;
+		color: var(--color-text);
+		line-height: 1.75;
+	}
+
+	.post-body :global(h2),
+	.post-body :global(h3) {
+		margin-top: 48px;
+	}
+
+	.post-body :global(a) {
+		color: var(--color-accent);
+		font-weight: 700;
+	}
+
+	.post-body :global(ul),
+	.post-body :global(ol) {
+		padding-left: 1.4rem;
+	}
+
+	@media (max-width: 640px) {
+		.post-hero-content {
+			padding-block: 34px 52px;
+		}
+	}
+</style>

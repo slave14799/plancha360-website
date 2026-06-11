@@ -1,0 +1,32 @@
+---
+import imageUrlBuilder from "@sanity/image-url";
+
+const { node } = Astro.props;
+
+const imageBuilder = imageUrlBuilder({
+	projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
+	dataset: import.meta.env.PUBLIC_SANITY_DATASET,
+});
+
+const src = node?.asset
+	? imageBuilder.image(node).width(1200).fit("max").auto("format").url()
+	: "";
+---
+
+{
+	src ? (
+		<figure class="portable-image">
+			<img src={src} alt={node.alt ?? ""} loading="lazy" />
+		</figure>
+	) : null
+}
+
+<style>
+	.portable-image {
+		margin-block: 36px;
+	}
+
+	.portable-image img {
+		width: 100%;
+	}
+</style>

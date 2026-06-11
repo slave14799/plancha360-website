@@ -1,0 +1,258 @@
+---
+import { sanityClient } from "sanity:client";
+import imageUrlBuilder from "@sanity/image-url";
+import groq from "groq";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+type Category = "recipe" | "tips" | "general";
+
+type Post = {
+	title: string;
+	slug: string;
+	publishedAt?: string;
+	category: Category;
+	excerpt?: string;
+	mainImage?: {
+		asset?: unknown;
+		alt?: string;
+	};
+};
+
+const categoryLabels = {
+	recipe: "Recipe",
+	tips: "Tips & Tricks",
+	general: "General",
+} satisfies { [key in Category]: string };
+
+const selectedCategory = Astro.url.searchParams.get("category");
+const activeCategory =
+	selectedCategory === "recipe" || selectedCategory === "tips" ? selectedCategory : "all";
+
+const posts = await sanityClient.fetch(
+	groq`*[
+		_type == "post" &&
+		defined(slug.current) &&
+		(!defined($category) || category == $category)
+	] | order(publishedAt desc) {
+		title,
+		"slug": slug.current,
+		publishedAt,
+		category,
+		excerpt,
+		mainImage
+	}`,
+	{ category: activeCategory === "all" ? null : activeCategory },
+) as Post[];
+
+const imageBuilder = imageUrlBuilder({
+	projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
+	dataset: import.meta.env.PUBLIC_SANITY_DATASET,
+});
+
+function imageUrl(source: unknown) {
+	return imageBuilder.image(source).width(900).height(640).fit("crop").auto("format").url();
+}
+
+function formatDate(date?: string) {
+	if (!date) return "";
+	return new Intl.DateTimeFormat("en", {
+		month: "long",
+		day: "numeric",
+		year: "numeric",
+	}).format(new Date(date));
+}
+---
+
+<BaseLayout title="Recipes, Tips & Ideas | Plancha360" description="Recipes, tips, and stories from Plancha360.">
+	<main class="blog-page">
+		<section class="blog-hero">
+			<div class="container blog-hero-inner">
+				<p class="eyebrow">Plancha360 Journal</p>
+				<h1>Recipes, Tips & Ideas</h1>
+			</div>
+		</section>
+
+		<section class="section blog-listing">
+			<div class="container">
+				<nav class="blog-filters" aria-label="Blog categories">
+					<a class:list={[{ active: activeCategory === "all" }]} href="/blog">All</a>
+					<a class:list={[{ active: activeCategory === "recipe" }]} href="/blog?category=recipe">Recipe</a>
+					<a class:list={[{ active: activeCategory === "tips" }]} href="/blog?category=tips">Tips & Tricks</a>
+				</nav>
+
+				{
+					posts.length > 0 ? (
+						<div class="post-grid">
+							{posts.map((post) => (
+								<article class="post-card">
+									<a class="post-image-link" href={`/blog/${post.slug}`} aria-label={post.title}>
+										{post.mainImage?.asset ? (
+											<img src={imageUrl(post.mainImage)} alt={post.mainImage.alt ?? post.title} loading="lazy" />
+										) : (
+											<div class="img-placeholder">[blog-main-image]</div>
+										)}
+									</a>
+									<div class="post-card-body">
+										<div class="post-meta">
+											<span class="category-badge">{categoryLabels[post.category]}</span>
+{post.publishedAt ? <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time> : null}										</div>
+										<h2><a href={`/blog/${post.slug}`}>{post.title}</a></h2>
+{post.excerpt ? <p>{post.excerpt}</p> : null}										<a class="post-link" href={`/blog/${post.slug}`}>Read more</a>
+									</div>
+								</article>
+							))}
+						</div>
+					) : (
+						<p class="empty-state">No posts published yet.</p>
+					)
+				}
+			</div>
+		</section>
+	</main>
+</BaseLayout>
+
+<style>
+	.blog-page {
+		background: var(--color-bg);
+		min-height: 100vh;
+	}
+
+	.blog-hero {
+		padding-block: clamp(120px, 16vw, 190px) clamp(48px, 8vw, 92px);
+		background: var(--color-dark);
+		color: #ffffff;
+	}
+
+	.blog-hero-inner {
+		display: grid;
+		gap: 18px;
+	}
+
+	.blog-hero h1 {
+		max-width: 760px;
+	}
+
+	.blog-listing {
+		padding-top: clamp(40px, 6vw, 72px);
+	}
+
+	.blog-filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-bottom: 36px;
+	}
+
+	.blog-filters a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 42px;
+		padding: 9px 16px;
+		border: 1px solid rgba(26, 23, 20, 0.16);
+		border-radius: 3px;
+		color: var(--color-muted);
+		font-size: 0.95rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+	}
+
+	.blog-filters a:hover,
+	.blog-filters a.active {
+		background: var(--color-accent);
+		border-color: var(--color-accent);
+		color: #ffffff;
+	}
+
+	.post-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: clamp(20px, 3vw, 32px);
+	}
+
+	.post-card {
+		display: grid;
+		grid-template-rows: auto 1fr;
+		background: var(--color-surface);
+	}
+
+	.post-image-link {
+		display: block;
+		overflow: hidden;
+		background: rgba(107, 97, 88, 0.08);
+	}
+
+	.post-card img,
+	.post-card .img-placeholder {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		transition: transform 0.35s ease;
+	}
+
+	.post-image-link:hover img {
+		transform: scale(1.03);
+	}
+
+	.post-card-body {
+		display: grid;
+		align-content: start;
+		gap: 16px;
+		padding: clamp(20px, 3vw, 28px);
+	}
+
+	.post-meta {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		color: var(--color-muted);
+		font-size: 0.85rem;
+	}
+
+	.category-badge {
+		color: var(--color-accent);
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.post-card h2 {
+		font-size: clamp(1.35rem, 2vw, 1.75rem);
+	}
+
+	.post-card h2 a,
+	.post-link {
+		text-decoration: none;
+	}
+
+	.post-card p {
+		color: var(--color-muted);
+	}
+
+	.post-link {
+		width: fit-content;
+		color: var(--color-accent);
+		font-weight: 700;
+	}
+
+	.empty-state {
+		color: var(--color-muted);
+	}
+
+	@media (max-width: 900px) {
+		.post-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 640px) {
+		.blog-hero {
+			padding-top: 110px;
+		}
+
+		.post-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
