@@ -4,15 +4,16 @@ import sanity from '@sanity/astro';
 
 const isProd = process.env.CF_PAGES === '1';
 
-const prodAdapter = isProd
-	? (await import('@astrojs/cloudflare')).then(m => m.default())
-	: undefined;
+let adapter;
+if (isProd) {
+	const { default: cloudflare } = await import('@astrojs/cloudflare');
+	adapter = cloudflare();
+}
 
-// https://astro.build/config
 export default defineConfig({
 	site: 'https://plancha360.com',
 	output: isProd ? 'server' : 'static',
-	adapter: prodAdapter,
+	adapter: adapter,
 	i18n: {
 		defaultLocale: 'en',
 		locales: ['en', 'es'],
