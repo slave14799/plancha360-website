@@ -1,0 +1,260 @@
+/* ============================================================
+   Plancha360 — Global Design System
+   Single source of truth for tokens, typography, and layout
+   primitives. Section-specific layout lives in each component.
+   ============================================================ */
+
+/* ---------- Tokens ---------- */
+
+:root {
+	color-scheme: light;
+
+	--color-bg: #f5f0e8;
+	--color-surface: #ffffff;
+	--color-text: #1a1714;
+	--color-muted: #6b6158;
+	--color-accent: #b6532a;
+	--color-dark: #2a1c14;
+
+	--font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+	/* Type scale */
+	--text-hero: clamp(2.5rem, 6vw, 5rem);
+	--text-h2: clamp(2rem, 4.2vw, 3.5rem);
+	--text-h3: clamp(1.25rem, 1.6vw, 1.5rem);
+	--text-lede: clamp(1.1rem, 1.4vw, 1.25rem);
+
+	/* Layout */
+	--container-max: 1200px;
+	--container-pad: clamp(20px, 4vw, 48px);
+	--section-gap: clamp(80px, 12vw, 160px);
+}
+
+/* ---------- Reset ---------- */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	background: var(--color-bg);
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	font-family: var(--font-sans);
+	font-weight: 400;
+	font-size: 1.0625rem;
+	line-height: 1.6;
+	color: var(--color-text);
+	background: var(--color-bg);
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure {
+	margin: 0;
+}
+
+ul,
+ol {
+	padding: 0;
+}
+
+/* ---------- Typography ---------- */
+
+h1,
+h2,
+h3 {
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	line-height: 1.05;
+	text-wrap: balance;
+}
+
+h1 {
+	font-size: var(--text-hero);
+}
+
+h2 {
+	font-size: var(--text-h2);
+}
+
+h3 {
+	font-size: var(--text-h3);
+	letter-spacing: -0.015em;
+	line-height: 1.2;
+}
+
+p {
+	max-width: 65ch;
+}
+
+a {
+	color: inherit;
+}
+
+.eyebrow {
+	display: block;
+	margin-bottom: 20px;
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+}
+
+.lede {
+	font-size: var(--text-lede);
+	font-weight: 400;
+	line-height: 1.6;
+	color: var(--color-muted);
+	max-width: 65ch;
+}
+
+.muted {
+	color: var(--color-muted);
+}
+
+/* ---------- Layout primitives ---------- */
+
+.container {
+	max-width: var(--container-max);
+	margin-inline: auto;
+	padding-inline: var(--container-pad);
+}
+
+/* Adjacent sections add up to --section-gap of breathing room */
+.section {
+	padding-block: calc(var(--section-gap) / 2);
+}
+
+.full-bleed {
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
+}
+
+/* Centered narrow text block for editorial sections */
+.text-block {
+	max-width: 720px;
+	margin-inline: auto;
+	text-align: center;
+}
+
+.text-block p:not(.eyebrow) {
+	margin-inline: auto;
+	margin-top: 24px;
+}
+
+/* ---------- Buttons ---------- */
+
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 52px;
+	padding: 14px 32px;
+	font-family: var(--font-sans);
+	font-size: 1rem;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	text-decoration: none;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.button-primary {
+	background: var(--color-text);
+	color: var(--color-bg);
+}
+
+.button-primary:hover {
+	background: var(--color-accent);
+	color: #ffffff;
+}
+
+.button-secondary {
+	background: transparent;
+	color: var(--color-text);
+	border-color: rgba(26, 23, 20, 0.3);
+}
+
+.button-secondary:hover {
+	border-color: var(--color-text);
+}
+
+/* ---------- Forms ---------- */
+
+label {
+	display: grid;
+	gap: 8px;
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--color-text);
+}
+
+input,
+select,
+textarea {
+	width: 100%;
+	padding: 14px 16px;
+	font: inherit;
+	font-size: 1rem;
+	color: var(--color-text);
+	background: var(--color-surface);
+	border: 1px solid rgba(26, 23, 20, 0.18);
+	border-radius: 3px;
+	outline: none;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+	border-color: var(--color-accent);
+	box-shadow: 0 0 0 3px rgba(182, 83, 42, 0.15);
+}
+
+textarea {
+	resize: vertical;
+}
+
+/* ---------- Image placeholder (for missing files) ---------- */
+
+.img-placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	aspect-ratio: 4 / 3;
+	background: repeating-linear-gradient(
+		45deg,
+		rgba(107, 97, 88, 0.08),
+		rgba(107, 97, 88, 0.08) 12px,
+		rgba(107, 97, 88, 0.14) 12px,
+		rgba(107, 97, 88, 0.14) 24px
+	);
+	color: var(--color-muted);
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+}

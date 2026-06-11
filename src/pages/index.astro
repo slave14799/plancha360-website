@@ -1,414 +1,129 @@
 ---
-const pageTitle = "Plancha360 | Outdoor cooking for people who host";
-const pageDescription =
-	"Plancha360 is a steel outdoor cooking brand built around shared meals, warm evenings, and a product that feels as considered as the home it lives in.";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import ProductViewer3D from "../components/ProductViewer3D.astro";
+import { images } from "../data/images";
 
-const modelCards = [
-	{
-		title: "Model 900",
-		image: "/images/products/model-900.png",
-		description:
-			"900 mm diameter · 5 mm grill plate · made for bigger terraces, longer tables, and more people around the fire.",
-		points: ["Bigger footprint", "Social cooking", "Statement presence"],
-	},
-	{
-		title: "Model 700",
-		image: "/images/products/model-700.png",
-		description:
-			"700 mm diameter · 5 mm grill plate · a tighter footprint for smaller patios and simpler setups.",
-		points: ["Smaller footprint", "Easy to place", "Same material language"],
-	},
-	{
-		title: "Why it matters",
-		image: "/images/products/product-01.png",
-		description:
-			"The object should feel honest: steel, scale, and proportions that make the evening feel deliberate rather than technical.",
-		points: ["Honest materials", "Easy to explain", "Built around hosting"],
-	},
-];
-
-const renderGallery = [
-	{
-		image: "/images/renders/plancha360-render-front-quarter.png",
-		title: "Front quarter",
-		caption: "The first read: stable, warm, and ready to anchor a real gathering.",
-	},
-	{
-		image: "/images/renders/plancha360-render-left-quarter.png",
-		title: "Left quarter",
-		caption: "A clean angle for showing profile, depth, and steel presence.",
-	},
-	{
-		image: "/images/renders/plancha360-render-rear-quarter.png",
-		title: "Rear quarter",
-		caption: "The back view makes the silhouette feel complete and credible.",
-	},
-];
-
-const trustPoints = [
-	{
-		title: "Price",
-		body:
-			"Premium has to mean clearer design, better build, and a better evening — not just a higher number.",
-	},
-	{
-		title: "Size",
-		body:
-			"The product should look at home on a terrace, not oversized in a catalog.",
-	},
-	{
-		title: "Safety",
-		body:
-			"People should understand the footprint and stability at a glance.",
-	},
-	{
-		title: "Practicality",
-		body:
-			"It should be obvious that this is designed for real homes, not just beautiful photos.",
-	},
-];
-
-const faqItems = [
-	{
-		title: "Who is this for?",
-		body:
-			"People who host, love outdoor cooking, and want something that feels premium without becoming a luxury flex object.",
-	},
-	{
-		title: "Can I order directly?",
-		body:
-			"That is the next phase. The site is built to collect demand now and support direct checkout later.",
-	},
-	{
-		title: "Will rentals be available?",
-		body:
-			"Yes, later the brand can expand into rentals and event use once the core product and offer are established.",
-	},
-	{
-		title: "What will the content focus on?",
-		body:
-			"Outdoor cooking ideas, hosting inspiration, product care, and the real-life moments that make the brand feel useful.",
-	},
-];
+const pageTitle = "Plancha360 — The grill you stand around, not behind.";
+const pageDescription =
+	"Plancha360 is a round, gas-fired plancha built for the way people actually want to cook outside — together. Everyone gathers around the same surface, food in the middle, drink in hand, host included.";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle}</title>
-		<meta name="description" content={pageDescription} />
-		<meta name="theme-color" content="#f4eadc" />
-		<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-	</head>
-	<body>
-		<main class="site-shell">
-			<header class="topbar">
-				<a class="brand" href="#top" aria-label="Plancha360 home">
-					<img src="/images/logo/plancha360-logo.svg" alt="Plancha360" />
-					<span>Plancha360</span>
-				</a>
-				<nav aria-label="Primary">
-					<a href="#product">Product</a>
-					<a href="#gallery">Gallery</a>
-					<a href="#faq">FAQ</a>
-					<a href="#waitlist">Waitlist</a>
-				</nav>
-			</header>
+<BaseLayout title={pageTitle} description={pageDescription}>
+	<header class="site-header">
+		<div class="container header-inner">
+			<a class="brand" href="#top" aria-label="Plancha360 home">
+				<img src={images.logo} alt="Plancha360" width="36" height="36" />
+				<span>Plancha360</span>
+			</a>
+			<nav aria-label="Primary">
+				<a href="#product">Product</a>
+				<a href="#story">The story</a>
+				<a href="#waitlist">Waitlist</a>
+			</nav>
+		</div>
+	</header>
 
-			<section class="hero" id="top">
+	<main id="top">
+		<section class="section hero">
+			<div class="container hero-inner">
 				<div class="hero-copy">
 					<p class="eyebrow">Outdoor cooking, made social</p>
-					<h1>The fire should feel like the host.</h1>
+					<h1>The grill you stand around, not behind.</h1>
 					<p class="lede">
-						Plancha360 is a steel outdoor cooking brand for people who want the evening to revolve around food,
-						conversation, and a product that feels as considered as the home it lives in.
+						Plancha360 is a round, gas-fired plancha built for the way people actually want to cook
+						outside — together. Everyone gathers around the same surface, food in the middle, drink
+						in hand, host included.
 					</p>
-
 					<div class="hero-actions">
 						<a class="button button-primary" href="#waitlist">Join the waitlist</a>
-						<a class="button button-secondary" href="#product">Explore the models</a>
-					</div>
-
-					<div class="hero-pills" aria-label="Key facts">
-						<span>Model 900</span>
-						<span>Model 700</span>
-						<span>5 mm steel plate</span>
-						<span>Launch waitlist</span>
-					</div>
-
-					<div class="hero-metrics" aria-label="Product metrics">
-						<div>
-							<strong>900</strong>
-							<span>mm diameter</span>
-						</div>
-						<div>
-							<strong>700</strong>
-							<span>mm diameter</span>
-						</div>
-						<div>
-							<strong>5</strong>
-							<span>mm grill plate</span>
-						</div>
-						<div>
-							<strong>90</strong>
-							<span>cm height</span>
-						</div>
+						<a class="button button-secondary" href="#product">See the product</a>
 					</div>
 				</div>
-
 				<div class="hero-visual">
-					<div class="hero-viewer">
-						<ProductViewer3D />
-						<div class="media-caption hero-viewer-caption">
-							<p class="eyebrow">Interactive baseline</p>
-							<p>Inspect the silhouette, proportions, and steel read while the image library is still growing.</p>
-						</div>
-					</div>
-
-					<figure class="media-card media-card-photo">
-						<img src="/images/lifestyle/plancha360-community.png" alt="A warm outdoor dinner around Plancha360" />
-						<figcaption>
-							<strong>Built for real evenings.</strong>
-							<p>Warm light, shared plates, and enough presence to make the grill feel like furniture for the fire.</p>
-						</figcaption>
-					</figure>
+					<ProductViewer3D />
 				</div>
-			</section>
+			</div>
+		</section>
 
-			<section class="section story-section" id="story">
-				<div class="section-heading">
-					<p class="eyebrow">The idea</p>
-					<h2>Not a grill. A reason to gather.</h2>
-					<p>
-						The brand should sell the evening first: a simple object that pulls people together, makes hosting feel easy,
-						and looks honest from every angle.
+		<!-- Sections from docs/plancha360-website-copy.md (intro, story, product,
+		     models, value, sustainability, FAQ) are added in the next step,
+		     after the design direction is approved. -->
+
+		<section class="section waitlist" id="waitlist">
+			<div class="container waitlist-inner">
+				<div class="waitlist-copy">
+					<p class="eyebrow">Launching August 2026</p>
+					<h2>Be first when Plancha360 opens.</h2>
+					<p class="lede">
+						The first grills ship in August 2026, in a limited first batch. Join the waitlist to
+						get early access, launch pricing, and updates as we go from prototype to product.
 					</p>
 				</div>
 
-				<div class="story-grid">
-					<div class="story-lead">
-						<p>
-							When the cooking surface becomes the center of the terrace, people stop circling the kitchen and start
-							circling each other. That is the product story here: not appliance-first, but gathering-first.
-						</p>
-					</div>
-					<ul class="story-points">
-						<li>Premium enough to trust.</li>
-						<li>Warm enough to feel human.</li>
-						<li>Clear enough to buy quickly.</li>
-						<li>Social enough to become the focal point of the night.</li>
-					</ul>
+				<form class="waitlist-form" id="waitlist-form">
+					<label>
+						Name
+						<input type="text" name="name" required />
+					</label>
+					<label>
+						Email
+						<input type="email" name="email" required />
+					</label>
+					<label class="full-width">
+						What are you planning?
+						<select name="intent">
+							<option>Hosting at home</option>
+							<option>Buying as a gift</option>
+							<option>Event or rental interest</option>
+							<option>Just curious</option>
+						</select>
+					</label>
+					<label class="full-width">
+						Message (optional)
+						<textarea name="message" rows="5"></textarea>
+					</label>
+					<p class="waitlist-error" id="waitlist-error" hidden></p>
+					<button class="button button-primary full-width" type="submit" id="waitlist-submit">
+						Join the waitlist
+					</button>
+				</form>
+				<div class="waitlist-success" id="waitlist-success" hidden>
+					<p class="waitlist-success-title">You're on the list.</p>
+					<p>We'll be in touch with early access and launch pricing before August 2026.</p>
 				</div>
-			</section>
+			</div>
+		</section>
+	</main>
 
-			<section class="section" id="product">
-				<div class="section-heading">
-					<p class="eyebrow">The product</p>
-					<h2>Two sizes. Same idea.</h2>
-					<p>
-						The page should make the choice simple: pick the footprint that fits the space, then let the product carry the
-						emotion.
-					</p>
-				</div>
-
-				<div class="model-grid">
-					{modelCards.map((card) => (
-						<article class="model-card">
-							<img src={card.image} alt={card.title} />
-							<div class="model-card-copy">
-								<h3>{card.title}</h3>
-								<p>{card.description}</p>
-								<ul>
-									{card.points.map((point) => <li>{point}</li>)}
-								</ul>
-							</div>
-						</article>
-					))}
-				</div>
-			</section>
-
-			<section class="section" id="gallery">
-				<div class="section-heading section-heading-wide">
-					<p class="eyebrow">Visual language</p>
-					<h2>Three clean views. One clear product.</h2>
-					<p>
-						Use the render set like a small editorial series: front, side, and rear views that make the shape feel credible
-						and the scale easy to read.
-					</p>
-				</div>
-
-				<div class="gallery-grid">
-					{renderGallery.map((item) => (
-						<figure class="gallery-card">
-							<img src={item.image} alt={item.title} />
-							<figcaption>
-								<strong>{item.title}</strong>
-								<p>{item.caption}</p>
-							</figcaption>
-						</figure>
-					))}
-				</div>
-			</section>
-
-			<section class="section">
-				<div class="section-heading section-heading-wide">
-					<p class="eyebrow">Why it earns trust</p>
-					<h2>Answer the objections before they become doubts.</h2>
-					<p>
-						The brand has to make the real concerns obvious — value, size, durability, safety, and practicality — without
-						turning the page into a spec sheet.
-					</p>
-				</div>
-
-				<div class="trust-grid">
-					{trustPoints.map((point) => (
-						<article class="trust-card">
-							<h3>{point.title}</h3>
-							<p>{point.body}</p>
-						</article>
-					))}
-				</div>
-			</section>
-
-			<section class="section waitlist-section" id="waitlist">
-				<div class="waitlist-layout">
-					<div class="waitlist-copy">
-						<p class="eyebrow">Waitlist</p>
-						<h2>Be first when Plancha360 opens.</h2>
-						<p>
-							For now the job is interest capture. Later it can become direct sales, rentals, and deeper content — but the
-							first step is building demand.
-						</p>
-						<ul class="waitlist-notes">
-							<li>Launch updates</li>
-							<li>Availability first</li>
-							<li>Product stories and hosting ideas</li>
-						</ul>
-					</div>
-
-					<form class="waitlist-form" id="waitlist-form">
-						<label>
-							Name
-							<input type="text" name="name" placeholder="Your name" required />
-						</label>
-						<label>
-							Email
-							<input type="email" name="email" placeholder="you@example.com" required />
-						</label>
-						<label>
-							What are you planning?
-							<select name="intent">
-								<option>Hosting at home</option>
-								<option>Buying as a gift</option>
-								<option>Event / rental interest</option>
-								<option>Just curious</option>
-							</select>
-						</label>
-						<label class="full-width">
-							Message
-							<textarea name="message" rows="5" placeholder="Tell us what you want to cook, host, or build around Plancha360."></textarea>
-						</label>
-						<p class="waitlist-error" id="waitlist-error" hidden></p>
-						<button class="button button-primary full-width" type="submit" id="waitlist-submit">Join the waitlist</button>
-					</form>
-					<div class="waitlist-success" id="waitlist-success" hidden>
-						<p class="waitlist-success-title">You're on the list.</p>
-						<p>We'll be in touch with early access and launch pricing before August 2026.</p>
-					</div>
-				</div>
-			</section>
-
-			<section class="section" id="faq">
-				<div class="section-heading section-heading-wide">
-					<p class="eyebrow">FAQ</p>
-					<h2>Clear answers, no supplier noise.</h2>
-				</div>
-
-				<div class="faq-grid">
-					{faqItems.map((item, index) => (
-						<details class="faq-item" open={index === 0}>
-							<summary>{item.title}</summary>
-							<p>{item.body}</p>
-						</details>
-					))}
-				</div>
-			</section>
-		</main>
-	</body>
-</html>
+	<footer class="site-footer">
+		<div class="container">
+			<p>Plancha360 — Outdoor cooking, made social.</p>
+			<p class="muted">Made in Spain. Launching 2026.</p>
+		</div>
+	</footer>
+</BaseLayout>
 
 <style>
-	:global(:root) {
-		color-scheme: light;
-		--bg: #f4eadc;
-		--panel: rgba(255, 250, 244, 0.76);
-		--panel-strong: #fffaf4;
-		--text: #201914;
-		--muted: #67594f;
-		--border: rgba(32, 25, 20, 0.1);
-		--accent: #b3562c;
-		--accent-2: #274741;
-		--shadow: 0 28px 90px rgba(63, 40, 20, 0.14);
-		font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	/* ---------- Header ---------- */
+
+	.site-header {
+		padding-block: 24px;
 	}
 
-	:global(html) {
-		background:
-			radial-gradient(circle at top left, rgba(179, 86, 44, 0.14), transparent 32%),
-			radial-gradient(circle at top right, rgba(39, 71, 65, 0.12), transparent 30%),
-			linear-gradient(180deg, #f8efe3 0%, var(--bg) 42%, #f2e7da 100%);
-		color: var(--text);
-	}
-
-	:global(body) {
-		margin: 0;
-		min-height: 100vh;
-	}
-
-	:global(img) {
-		display: block;
-		max-width: 100%;
-	}
-
-	:global(h1),
-	:global(h2),
-	:global(h3) {
-		margin: 0;
-		font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
-		letter-spacing: -0.03em;
-		font-weight: 600;
-	}
-
-	:global(p) {
-		margin: 0;
-	}
-
-	.site-shell {
-		max-width: 1240px;
-		margin: 0 auto;
-		padding: 24px 22px 96px;
-	}
-
-	.topbar {
+	.header-inner {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 20px;
-		padding: 12px 6px 28px;
+		gap: 24px;
 	}
 
 	.brand {
 		display: inline-flex;
 		align-items: center;
 		gap: 12px;
-		text-decoration: none;
-		color: var(--text);
 		font-weight: 700;
 		letter-spacing: 0.02em;
+		text-decoration: none;
 	}
 
 	.brand img {
@@ -419,557 +134,128 @@ const faqItems = [
 
 	nav {
 		display: flex;
-		gap: 18px;
+		gap: 32px;
 		flex-wrap: wrap;
 	}
 
 	nav a {
+		font-size: 0.95rem;
+		font-weight: 500;
+		color: var(--color-muted);
 		text-decoration: none;
-		color: var(--muted);
-		font-weight: 600;
+		transition: color 0.2s ease;
 	}
+
+	nav a:hover {
+		color: var(--color-text);
+	}
+
+	/* ---------- Hero ---------- */
 
 	.hero {
+		padding-top: clamp(40px, 6vw, 96px);
+	}
+
+	.hero-inner {
 		display: grid;
-		grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-		gap: clamp(24px, 4vw, 44px);
-		align-items: start;
-		padding: clamp(28px, 4vw, 50px);
-		border-radius: 36px;
-		background: linear-gradient(160deg, rgba(255, 251, 246, 0.92), rgba(248, 239, 229, 0.68));
-		border: 1px solid rgba(32, 25, 20, 0.09);
-		box-shadow: var(--shadow);
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: clamp(32px, 5vw, 72px);
+		align-items: center;
 	}
 
-	.hero-copy {
-		align-self: center;
-	}
-
-	.eyebrow {
-		margin: 0 0 12px;
-		text-transform: uppercase;
-		letter-spacing: 0.18em;
-		font-size: 0.76rem;
-		color: var(--accent);
-		font-weight: 700;
-	}
-
-	h1 {
-		font-size: clamp(3.3rem, 6.8vw, 6.8rem);
-		line-height: 0.92;
-		max-width: 10ch;
-		margin-bottom: 20px;
-		text-wrap: balance;
-	}
-
-	h2 {
-		font-size: clamp(2rem, 3.8vw, 3.4rem);
-		line-height: 0.98;
-		text-wrap: balance;
-	}
-
-	h3 {
-		font-size: 1.34rem;
-		line-height: 1.08;
-	}
-
-	.lede {
-		font-size: 1.12rem;
-		line-height: 1.78;
-		max-width: 62ch;
-		color: var(--muted);
+	.hero-copy h1 {
 		margin-bottom: 28px;
+	}
+
+	.hero-copy .lede {
+		margin-bottom: 40px;
 	}
 
 	.hero-actions {
 		display: flex;
-		gap: 14px;
-		flex-wrap: wrap;
-		margin-bottom: 24px;
-	}
-
-	.button {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 14px 20px;
-		min-height: 48px;
-		border-radius: 999px;
-		text-decoration: none;
-		font-weight: 700;
-		border: 1px solid transparent;
-	}
-
-	.button-primary {
-		background: var(--text);
-		color: white;
-	}
-
-	.button-secondary {
-		border-color: rgba(32, 25, 20, 0.14);
-		color: var(--text);
-		background: rgba(255, 255, 255, 0.46);
-	}
-
-	.hero-pills {
-		display: flex;
-		gap: 10px;
-		flex-wrap: wrap;
-		margin-bottom: 18px;
-	}
-
-	.hero-pills span {
-		display: inline-flex;
-		align-items: center;
-		padding: 9px 13px;
-		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.58);
-		border: 1px solid rgba(32, 25, 20, 0.08);
-		color: var(--muted);
-		font-size: 0.9rem;
-		font-weight: 600;
-	}
-
-	.hero-metrics {
-		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: 12px;
-	}
-
-	.hero-metrics div {
-		padding: 20px 16px 18px;
-		border-radius: 22px;
-		background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.54));
-		border: 1px solid rgba(32, 25, 20, 0.08);
-	}
-
-	.hero-metrics strong {
-		display: block;
-		font-size: 1.7rem;
-		line-height: 1;
-		margin-bottom: 6px;
-		font-variant-numeric: tabular-nums;
-	}
-
-	.hero-metrics span {
-		display: block;
-		font-size: 0.86rem;
-		line-height: 1.45;
-		color: var(--muted);
-	}
-
-	.hero-visual {
-		display: grid;
 		gap: 16px;
-		align-content: start;
+		flex-wrap: wrap;
 	}
 
-	.media-card {
-		overflow: hidden;
-		border-radius: 30px;
-		border: 1px solid rgba(32, 25, 20, 0.08);
-		background: rgba(255, 255, 255, 0.7);
-		box-shadow: 0 18px 40px rgba(45, 30, 18, 0.12);
-	}
+	/* ---------- Waitlist ---------- */
 
-	.media-caption {
-		padding: 14px 18px 18px;
-	}
-
-	.media-caption p {
-		color: var(--muted);
-		line-height: 1.6;
-	}
-
-	.media-caption .eyebrow {
-		margin-bottom: 8px;
-	}
-
-	.media-card-photo img {
-		width: 100%;
-		aspect-ratio: 4 / 3;
-		object-fit: cover;
-	}
-
-	.media-card-photo figcaption {
-		padding: 14px 18px 18px;
-	}
-
-	.media-card-photo strong {
-		display: block;
-		font-size: 1.1rem;
-		margin-bottom: 8px;
-	}
-
-	.media-card-photo p {
-		color: var(--muted);
-		line-height: 1.6;
-	}
-
-	.section {
-		padding-top: 92px;
-	}
-
-	.section-heading {
-		max-width: 760px;
-		margin-bottom: 28px;
-	}
-
-	.section-heading p:not(.eyebrow) {
-		margin-top: 16px;
-		color: var(--muted);
-		line-height: 1.72;
-		max-width: 68ch;
-	}
-
-	.section-heading-wide {
-		max-width: 860px;
-	}
-
-	.story-grid {
+	.waitlist-inner {
 		display: grid;
-		grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-		gap: 24px;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+		gap: clamp(32px, 5vw, 72px);
 		align-items: start;
 	}
 
-	.story-lead {
-		padding: 28px;
-		border-radius: 28px;
-		background: linear-gradient(160deg, rgba(255, 255, 255, 0.68), rgba(255, 245, 235, 0.44));
-		border: 1px solid rgba(32, 25, 20, 0.08);
-		box-shadow: 0 18px 48px rgba(45, 30, 18, 0.08);
-	}
-
-	.story-lead p {
-		font-size: 1.18rem;
-		line-height: 1.84;
-		color: var(--text);
-	}
-
-	.story-points {
-		display: grid;
-		gap: 14px;
-		padding: 0;
-		margin: 0;
-		list-style: none;
-	}
-
-	.story-points li {
-		padding: 18px 20px;
-		border-radius: 20px;
-		background: rgba(255, 255, 255, 0.66);
-		border: 1px solid rgba(32, 25, 20, 0.08);
-		box-shadow: 0 12px 28px rgba(45, 30, 18, 0.06);
-		line-height: 1.6;
-	}
-
-	.model-grid {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 18px;
-	}
-
-	.model-card {
-		overflow: hidden;
-		border-radius: 28px;
-		background: rgba(255, 255, 255, 0.72);
-		border: 1px solid rgba(32, 25, 20, 0.08);
-		box-shadow: 0 18px 40px rgba(45, 30, 18, 0.1);
-	}
-
-	.model-card img {
-		width: 100%;
-		aspect-ratio: 4 / 3;
-		object-fit: cover;
-		background: #efe3d4;
-	}
-
-	.model-card-copy {
-		padding: 20px 20px 22px;
-	}
-
-	.model-card-copy p {
-		margin-top: 12px;
-		color: var(--muted);
-		line-height: 1.68;
-	}
-
-	.model-card-copy ul {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-		padding: 0;
-		margin: 18px 0 0;
-		list-style: none;
-	}
-
-	.model-card-copy li {
-		padding: 8px 11px;
-		border-radius: 999px;
-		background: rgba(39, 71, 65, 0.08);
-		color: var(--accent-2);
-		font-size: 0.86rem;
-		font-weight: 600;
-	}
-
-	.gallery-grid {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 18px;
-	}
-
-	.gallery-card {
-		overflow: hidden;
-		border-radius: 28px;
-		background: rgba(255, 255, 255, 0.72);
-		border: 1px solid rgba(32, 25, 20, 0.08);
-		box-shadow: 0 18px 40px rgba(45, 30, 18, 0.1);
-	}
-
-	.gallery-card img {
-		width: 100%;
-		aspect-ratio: 4 / 3;
-		object-fit: cover;
-		background: #e8ddd0;
-	}
-
-	.gallery-card figcaption {
-		padding: 18px 20px 20px;
-	}
-
-	.gallery-card strong {
-		display: block;
-		font-size: 1.06rem;
-		margin-bottom: 8px;
-	}
-
-	.gallery-card p {
-		color: var(--muted);
-		line-height: 1.65;
-	}
-
-	.trust-grid {
-		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: 16px;
-	}
-
-	.trust-card {
-		padding: 22px;
-		border-radius: 24px;
-		background: rgba(255, 255, 255, 0.68);
-		border: 1px solid rgba(32, 25, 20, 0.08);
-		box-shadow: 0 14px 34px rgba(45, 30, 18, 0.08);
-	}
-
-	.trust-card p {
-		margin-top: 12px;
-		color: var(--muted);
-		line-height: 1.68;
-	}
-
-	.waitlist-section {
-		padding-top: 100px;
-	}
-
-	.waitlist-layout {
-		display: grid;
-		grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-		gap: 24px;
-		padding: 30px;
-		border-radius: 34px;
-		background: linear-gradient(160deg, rgba(255, 251, 246, 0.92), rgba(242, 233, 223, 0.74));
-		border: 1px solid rgba(32, 25, 20, 0.09);
-		box-shadow: var(--shadow);
-	}
-
-	.waitlist-copy {
-		padding: 8px 4px;
-	}
-
-	.waitlist-copy p:not(.eyebrow) {
-		margin-top: 16px;
-		color: var(--muted);
-		line-height: 1.75;
-		max-width: 56ch;
-	}
-
-	.waitlist-notes {
-		display: grid;
-		gap: 10px;
-		padding: 0;
-		margin: 24px 0 0;
-		list-style: none;
-	}
-
-	.waitlist-notes li {
-		padding-left: 18px;
-		position: relative;
-		color: var(--text);
-		line-height: 1.5;
-	}
-
-	.waitlist-notes li::before {
-		content: "";
-		position: absolute;
-		left: 0;
-		top: 0.7em;
-		width: 7px;
-		height: 7px;
-		border-radius: 999px;
-		background: var(--accent);
+	.waitlist-copy h2 {
+		margin-bottom: 24px;
 	}
 
 	.waitlist-form {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 14px;
-		padding: 4px;
-	}
-
-	.waitlist-form label {
-		display: grid;
-		gap: 8px;
-		font-weight: 600;
-		color: var(--text);
-	}
-
-	.waitlist-form input,
-	.waitlist-form select,
-	.waitlist-form textarea {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 14px 16px;
-		border-radius: 18px;
-		border: 1px solid rgba(32, 25, 20, 0.12);
-		background: rgba(255, 255, 255, 0.88);
-		color: var(--text);
-		font: inherit;
-		outline: none;
-	}
-
-	.waitlist-form input:focus,
-	.waitlist-form select:focus,
-	.waitlist-form textarea:focus {
-		border-color: rgba(179, 86, 44, 0.5);
-		box-shadow: 0 0 0 4px rgba(179, 86, 44, 0.12);
+		gap: 20px;
 	}
 
 	.full-width {
 		grid-column: 1 / -1;
 	}
 
-	.waitlist-form textarea {
-		resize: vertical;
-		min-height: 140px;
-	}
-
-	.faq-grid {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 16px;
-	}
-
-	.faq-item {
-		padding: 18px 20px;
-		border-radius: 22px;
-		background: rgba(255, 255, 255, 0.7);
-		border: 1px solid rgba(32, 25, 20, 0.08);
-		box-shadow: 0 14px 34px rgba(45, 30, 18, 0.08);
-	}
-
-	.faq-item summary {
-		cursor: pointer;
-		font-weight: 700;
-		list-style: none;
-	}
-
-	.faq-item summary::-webkit-details-marker {
-		display: none;
-	}
-
-	.faq-item p {
-		margin-top: 14px;
-		color: var(--muted);
-		line-height: 1.7;
-	}
-
-	@media (max-width: 1080px) {
-		.hero,
-		.story-grid,
-		.waitlist-layout {
-			grid-template-columns: 1fr;
-		}
-
-		.model-grid,
-		.gallery-grid,
-		.trust-grid,
-		.faq-grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-
-		.hero-metrics {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-	}
-
 	.waitlist-error {
 		grid-column: 1 / -1;
-		color: var(--accent);
+		color: var(--color-accent);
 		font-size: 0.9rem;
 		line-height: 1.5;
 	}
 
 	.waitlist-success {
-		padding: 32px 8px;
-		text-align: center;
+		padding: 48px 0;
 	}
 
 	.waitlist-success-title {
-		font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
-		font-size: 1.7rem;
-		font-weight: 600;
-		letter-spacing: -0.02em;
+		font-size: var(--text-h3);
+		font-weight: 700;
+		letter-spacing: -0.015em;
 		margin-bottom: 12px;
 	}
 
 	.waitlist-success p:last-child {
-		color: var(--muted);
-		line-height: 1.7;
+		color: var(--color-muted);
 	}
 
-	@media (max-width: 720px) {
-		.site-shell {
-			padding: 20px 16px 72px;
-		}
+	/* ---------- Footer ---------- */
 
-		.topbar {
-			padding-bottom: 20px;
-			align-items: flex-start;
-			flex-direction: column;
-		}
+	.site-footer {
+		padding-block: clamp(48px, 6vw, 80px);
+		border-top: 1px solid rgba(26, 23, 20, 0.1);
+	}
 
-		.hero {
-			padding: 22px;
-			border-radius: 28px;
-		}
+	.site-footer p:first-child {
+		font-weight: 600;
+		margin-bottom: 8px;
+	}
 
-		h1 {
-			font-size: clamp(2.7rem, 14vw, 4.2rem);
-		}
+	/* ---------- Responsive ---------- */
 
-		.hero-metrics,
-		.model-grid,
-		.gallery-grid,
-		.trust-grid,
-		.faq-grid {
+	@media (max-width: 980px) {
+		.hero-inner,
+		.waitlist-inner {
 			grid-template-columns: 1fr;
 		}
+	}
 
-		.waitlist-layout {
-			padding: 20px;
-			border-radius: 28px;
+	@media (max-width: 640px) {
+		.site-header {
+			padding-block: 16px;
+		}
+
+		.header-inner {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 16px;
+		}
+
+		nav {
+			gap: 20px;
 		}
 
 		.waitlist-form {
