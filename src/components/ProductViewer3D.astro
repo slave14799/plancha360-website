@@ -8,7 +8,9 @@ const { class: className = "" } = Astro.props;
 			src="/3d/plancha360.glb"
 			camera-controls
 			disable-pan
-			camera-orbit="0deg 75deg 2.0m"
+			camera-orbit="45deg 65deg 3.8m"
+			min-camera-orbit="auto auto 1.5m"
+			max-camera-orbit="auto auto 6m"
 			shadow-intensity="1"
 			environment-image="neutral"
 			interaction-prompt="none"
@@ -73,7 +75,7 @@ const { class: className = "" } = Astro.props;
 	function tick() {
 		if (!interacting) {
 			angle = (angle + 0.08) % 360;
-			viewer.cameraOrbit = `${angle}deg 75deg 2.0m`;
+			viewer.cameraOrbit = `${angle}deg 65deg 3.8m`;
 		}
 		requestAnimationFrame(tick);
 	}
