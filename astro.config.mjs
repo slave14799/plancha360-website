@@ -1,19 +1,41 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sanity from '@sanity/astro';
+import cloudflare from '@astrojs/cloudflare';
 
-const isProd = process.env.CF_PAGES === '1';
+const noopSessionDriverId = 'virtual:plancha-noop-session-driver';
+const noopSessionDriver = {
+	name: 'plancha-noop-session-driver',
+	resolveId(id) {
+		return id === noopSessionDriverId ? id : null;
+	},
+	load(id) {
+		if (id !== noopSessionDriverId) return null;
 
-let adapter;
-if (isProd) {
-	const { default: cloudflare } = await import('@astrojs/cloudflare');
-	adapter = cloudflare();
+		return `
+export default function noopSessionDriver() {
+	return {
+		name: 'plancha-noop-session-driver',
+		getItem: async () => null,
+		setItem: async () => {},
+		removeItem: async () => {},
+		getKeys: async () => [],
+		clear: async () => {},
+	};
 }
+`;
+	},
+};
 
 export default defineConfig({
 	site: 'https://plancha360.com',
-	output: isProd ? 'server' : 'static',
-	adapter: adapter,
+	output: 'server',
+	adapter: cloudflare(),
+	session: {
+		driver: {
+			entrypoint: noopSessionDriverId,
+		},
+	},
 	i18n: {
 		defaultLocale: 'en',
 		locales: ['en', 'es'],
@@ -28,6 +50,7 @@ export default defineConfig({
 		server: {
 			allowedHosts: true,
 		},
+		plugins: [noopSessionDriver],
 	},
 	integrations: [
 		react(),

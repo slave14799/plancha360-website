@@ -4,6 +4,8 @@ import imageUrlBuilder from "@sanity/image-url";
 import groq from "groq";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
+export const prerender = false;
+
 type Category = "recipe" | "tips" | "general";
 
 type Post = {

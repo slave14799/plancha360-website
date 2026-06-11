@@ -6,6 +6,8 @@ import { PortableText } from "astro-portabletext";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SanityPortableImage from "../../components/SanityPortableImage.astro";
 
+export const prerender = false;
+
 type Category = "recipe" | "tips" | "general";
 
 type Post = {
@@ -21,24 +23,6 @@ type Post = {
 	seoTitle?: string;
 	seoDescription?: string;
 };
-
-type PostPath = {
-	slug: string;
-};
-
-export async function getStaticPaths() {
-	const paths = await sanityClient.fetch(
-		groq`*[_type == "post" && defined(slug.current)] {
-			"slug": slug.current
-		}`,
-	) as PostPath[];
-
-	return paths.map((postPath) => ({
-		params: {
-			slug: postPath.slug,
-		},
-	}));
-}
 
 const categoryLabels = {
 	recipe: "Recipe",
