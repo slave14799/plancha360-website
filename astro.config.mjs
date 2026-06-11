@@ -30,7 +30,9 @@ export default function noopSessionDriver() {
 export default defineConfig({
 	site: 'https://plancha360.com',
 	output: 'server',
-	adapter: cloudflare(),
+	adapter: cloudflare({
+		prerenderEnvironment: 'node',
+	}),
 	session: {
 		driver: {
 			entrypoint: noopSessionDriverId,

@@ -10,6 +10,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const blogNavLabel = lang === "es" ? "Recetas e Ideas" : "Recipes & Ideas";
 
 // Strings the waitlist client script needs at runtime, delivered via a JSON
 // data island so the script itself stays language-agnostic.
@@ -32,7 +33,7 @@ const waitlistRuntime = {
 			<nav aria-label="Primary">
 				<a href="#product">{t("nav.product")}</a>
 				<a href="#story">{t("nav.story")}</a>
-				<a href="/blog">{t("nav.blog")}</a>
+				<a href="/blog">{blogNavLabel}</a>
 				<a class="nav-pill" href="#waitlist">{t("nav.waitlist")}</a>
 				<a class="lang-toggle" href={alternatePath(lang)} aria-label={t("nav.langToggleLabel")}>
 					{t("nav.langToggle")}
